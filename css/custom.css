@@ -1,0 +1,23 @@
+body {
+    padding-top: 60px;
+}
+
+.fluid-container {
+    width: 720px;
+    min-width: 720px;
+}
+
+.fluid-content {
+    padding: 25px;
+}
+
+header.head h1 {
+    font-size: 58px;
+    margin-bottom: 9px;
+}
+
+header.head p {
+    font-size: 25px;
+    margin-bottom: 8px;
+    line-height: 1;
+}
