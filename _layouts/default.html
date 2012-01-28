@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf8">
+    <title>{{ page.title  }}</title>
+
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="/css/custom.css" type="text/css" />
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <p class="brand">HTCPCPD</p>
+            <ul class="nav">
+                <li>
+                    <a href="{{ site.baseurl }}">Home</a>
+                </li>
+                <li>
+                    <a href="{{ site.baseurl | append: 'posts.html' }}">Posts</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="fluid-container sidebar-left">
+
+        <section class="fluid-sidebar">
+            <ul class="nav list well">
+
+                <li class="nav-header">
+                    Posts
+                </li>
+                {% for post in site.posts %}
+                    <li>
+                        <a href="{{ post.url }}">{{ post.title }}</a>
+                    </li>
+                {% endfor %}
+
+            </ul>
+        </section>
+
+        <section class="fluid-content well">
+
+            {{ content }}
+
+        </section>
+
+    </div>
+
+</div>
+
+</body>
+</html>
