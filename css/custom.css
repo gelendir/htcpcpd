@@ -11,9 +11,11 @@ body {
     padding: 25px;
 }
 
-header.head h1 {
+header.head h1,
+.post h1
+{
     font-size: 58px;
-    margin-bottom: 9px;
+    margin-bottom: 15px;
 }
 
 header.head p {
@@ -21,3 +23,13 @@ header.head p {
     margin-bottom: 8px;
     line-height: 1;
 }
+
+.post h2 {
+    margin-bottom: 9px;
+    font-size: 18px;
+}
+
+.post p {
+    margin-bottom: 5px;
+}
+
