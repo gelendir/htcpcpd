@@ -1,1 +1,1 @@
-from serial import *
+from coffeepot import *
