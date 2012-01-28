@@ -4,8 +4,8 @@
     <meta charset="utf8">
     <title>{{ page.title  }}</title>
 
-    <link rel="stylesheet" href="{{ site.baseurl }}css/bootstrap.css" type="text/css" />
-    <link rel="stylesheet" href="{{ site.baseurl }}css/custom.css" type="text/css" />
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/custom.css" type="text/css" />
 </head>
 <body>
 
@@ -18,7 +18,7 @@
                     <a href="{{ site.baseurl }}">Home</a>
                 </li>
                 <li>
-                    <a href="{{ site.baseurl | append: 'posts.html' }}">Posts</a>
+                    <a href="{{ site.baseurl | append: '/posts.html' }}">Posts</a>
                 </li>
             </ul>
         </div>
@@ -37,7 +37,7 @@
                 </li>
                 {% for post in site.posts %}
                     <li>
-                        <a href="{{ post.url }}">{{ post.title }}</a>
+                        <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
                     </li>
                 {% endfor %}
 
