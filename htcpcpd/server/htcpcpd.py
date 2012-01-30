@@ -3,13 +3,18 @@
 import SocketServer
 import SimpleHTTPServer
 import urllib
-#from api import *
+import ConfigParser
+from api import *
 
-PORT = 8000
-TEAPOT = False
+config = ConfigParser.RawConfigParser()
+config.read('htcpcpd.ini')
+
+SERIAL_DEVICE = config.get('htcpcpd', 'device')
+PORT = config.getint('htcpcpd', 'port') #8000
+TEAPOT = config.getboolean('htcpcpd', 'teapot') #False
 
 class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
-	#pot = CoffeePot('/dev/ttyUSB0')
+	#pot = CoffeePot(SERIAL_DEVICE)
 
 	def do_GET(self):
 		if self.is_bad_HTCPCP_request():
@@ -104,13 +109,13 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		p = p.strip("/")
 		return p
 
-try:
-	httpd = SocketServer.ThreadingTCPServer(('localhost', PORT),HTCPCPDImpl)
-	
-	print "serving at port", PORT
-	httpd.serve_forever()
-except KeyboardInterrupt:
-	httpd.socket.close() 
-finally:
-	httpd.server_close()
+#try:
+#	httpd = SocketServer.ThreadingTCPServer(('localhost', PORT),HTCPCPDImpl)
+#	
+#	print "serving at port", PORT
+#	httpd.serve_forever()
+#except KeyboardInterrupt:
+#	httpd.socket.close() 
+#finally:
+#	httpd.server_close()
 

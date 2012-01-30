@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-from api import *
+#from api import *
 from server import *
 
 try:

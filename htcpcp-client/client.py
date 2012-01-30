@@ -1,3 +1,4 @@
+import sys
 from cmd import *
 from pycurl import *
 import StringIO
@@ -57,6 +58,12 @@ class HTCPCPClient(Cmd):
 	do_exit = do_quit
 	do_EOF = do_quit
 
+	def emptyline(self):
+		""" 
+		Do nothing when an empty line is submit
+		"""
+		pass
+
 	def brew_command(self, command):
 		c = Curl()
 		c.setopt(URL, self.url)
@@ -79,5 +86,18 @@ class HTCPCPClient(Cmd):
 		c.perform()
 		return b.getvalue()
 
-client = HTCPCPClient(('localhost', 8000))
+host = 'localhost'
+port = 8000
+
+if len(sys.argv) in [2, 3]:
+	host = sys.argv[1]
+
+	if len(sys.argv) == 3:
+		if sys.argv[2].isdigit():
+			port = int(sys.argv[2])
+		else:
+			print "usage: " + sys.argv[0] + " [host [port]]"
+			sys.exit(1)
+
+client = HTCPCPClient((host, port))
 client.cmdloop()
