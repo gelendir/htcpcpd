@@ -26,6 +26,23 @@ const char COMMAND_WATER_QUANTITY[] PROGMEM = "I CAN HAZ MOAR WATER ?";
 const char COMMAND_POT_PRESENCE[]   PROGMEM = "O HAI! I WAN MAH BUKKET ! U HAZ BUKKET ?";
 const char COMMAND_STOP_BREWING[]   PROGMEM = "OUCH OUCH! TIZ COFFEE IZ HAWT! STOP!";
 
+/* Responses */
+
+struct Response {
+    const int code;
+    const char* PROGMEM message;
+};
+
+struct Response RESPONSE_POT_AVAILABLE = {
+    200,
+    "I AIN'T BREWING COFFEEZ"
+};
+
+struct Response RESPONSE_POT_NOT_AVAILABLE = {
+    210,
+    "I'M BREWING COFFEEZ"
+};
+
 /*
  * Other constants
  */
@@ -41,7 +58,9 @@ bool boilerOn = false;
  */
 String readCommand();
 boolean isCommand( String input, const char* command );
-
+boolean isPotPresent();
+void sendResponse();
+void processPotState();
 
 void setup() {
     Serial.begin(9600);
@@ -50,11 +69,14 @@ void setup() {
 
 void loop() {
 
-    Serial.println("Waiting for command");
-    String command = readCommand();
-    Serial.println( command );
-    boolean recognized = isCommand( command, COMMAND_POT_STATE );
-    Serial.println( recognized );
+    if( Serial.available() ) {
+
+        String command = readCommand();
+        if( isCommand( command, COMMAND_POT_STATE ) ) {
+            processPotState();
+        }
+
+    }
 
 }
 
@@ -97,6 +119,41 @@ boolean isCommand( String input, const char* command ) {
     }
 
     return same;
+
+}
+
+boolean isPotPresent() {
+
+    boolean state = digitalRead( PIN_POT );
+    return state;
+
+}
+
+void sendResponse( struct Response response  ) {
+
+    const char* message = response.message;
+
+    Serial.print( response.code );
+    Serial.print(" ");
+
+    char character = (char)pgm_read_byte( message );
+    while( character != '\0' ) {
+        Serial.print( character );
+        message++;
+        character = (char)pgm_read_byte( message );
+    }
+
+    Serial.println();
+
+}
+
+void processPotState() {
+
+    if( isPotPresent() ) {
+        sendResponse( RESPONSE_POT_AVAILABLE );
+    } else {
+        sendResponse( RESPONSE_POT_NOT_AVAILABLE );
+    }
 
 }
 
