@@ -2,6 +2,7 @@
 
 import SocketServer
 import SimpleHTTPServer
+import urllib
 #from api import *
 
 PORT = 8000
@@ -10,16 +11,28 @@ TEAPOT = False
 class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	#pot = CoffeePot('/dev/ttyUSB0')
 
-	def __init__(self, *args, **kwargs):
-		SimpleHTTPServer.SimpleHTTPRequestHandler.__init__(self, *args, **kwargs)
-
-	def __del__(self):
-		pass
-
 	def do_GET(self):
 		if self.is_bad_HTCPCP_request():
 			return
-	
+		page = self.get_called_page()
+		if page == "status":
+			self.send_OK("The coffee is not brewing.")
+		elif page == "water":
+			#self.send_OK("There is no water in the coffee pot.")
+			self.send_OK("There is 2 litres of water in the coffee pot.")
+		elif page == "bucket":
+			self.send_OK("The bucket is in position.")
+		else:
+			self.send_error(404, "This page is unavailable")
+			self.end_headers()
+			self.wfile.write("""<p>Here is different link that you maybe want: </p>
+			<ul>
+				<li><a href="/status">Status of brewing</a></li>
+				<li><a href="/water">Quantity of water in the coffee cup</a></li>
+				<li><a href="/bucket">Status of the bucket</a></li>
+			</ul>
+			""")
+			
 	def do_POST(self):
 		if self.is_bad_HTCPCP_request():
 			return
@@ -28,11 +41,12 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	def do_PROPFIND(self):
 		if self.is_bad_HTCPCP_request():
 			return
-
+		self.send_OK()
 
 	def do_WHEN(self):
 		if self.is_bad_HTCPCP_request():
 			return
+		self.send_OK()
 
 
 	def do_BREW(self):
@@ -48,21 +62,20 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 				self.send_OK("The coffee pot is stopped.")
 			else:
 				self.error("The content-type header is not correctly set for this body.")
-				return
 		elif self.headers.getheader('content-type').strip() == "application/coffee-pot-command":
 			pass
 		else:
 			self.error("The content-type is not valid for this coffee pot.")
-			return
 
-	def send_OK(self, response):
+	def send_OK(self, response = ''):
 		self.send_response(200)
 		self.end_headers()
 		self.wfile.write(response)
 
-	def error(self, error):
+	def error(self, error, message = ""):
 		self.send_error(400, error)
 		self.end_headers()
+		self.wfile.write(message)
 	
 	def send_safe_header(self, condition = 'yes'):
 		self.send_header("Safe", condition)
@@ -85,6 +98,11 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		
 		return False
 
+	def get_called_page(self):
+		p = urllib.unquote_plus(self.path)
+		p = p.strip()
+		p = p.strip("/")
+		return p
 
 try:
 	httpd = SocketServer.ThreadingTCPServer(('localhost', PORT),HTCPCPDImpl)
