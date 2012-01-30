@@ -8,10 +8,16 @@ class CoffeePot:
     
 	def __init__(self, device):
 		self.pot = serial.Serial(device, 9600)
-		self.pot.open()
 		if not self.pot.isOpen():
 			raise Exception('Coffee pot is not connected!')
 	
+	def __del__(self):
+		self.close()
+
+	def close(self):
+		if self.pot.isOpen():
+			self.pot.close()
+
 	def brew(self):
 		return self.sendAndReceive(consts.BREW_COFFEE)
 
@@ -23,10 +29,11 @@ class CoffeePot:
 
 	def getNbLitres(self):
 		self.pot.write(consts.WATER_STATUS['message'] + '\n')
-		line = self.pot.readline()
-		print line
-		if line != consts.WATER_STATUS['bad']:
-			return int(re.findall(consts.WATER_STATUS['statuses']['good'])[0], line)
+		
+		line = self.pot.readline().strip()
+		
+		if line != consts.WATER_STATUS['statuses']['bad']:
+			return int(re.findall(consts.WATER_STATUS['statuses']['good'], line)[0])
 		else:
 			return 0
 	
@@ -38,7 +45,7 @@ class CoffeePot:
 		
 	def sendAndReceive(self, message):	
 		self.pot.write(message['message'] + '\n')
-		line = self.pot.readline()
+		line = self.pot.readline().strip()
 		return line == message['statuses']['good']
 
 if __name__ == '__main__':

@@ -2,11 +2,14 @@
 
 import SocketServer
 import SimpleHTTPServer
+from api import *
 
 PORT = 8000
 TEAPOT = False
 
 class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
+	pot = CoffeePot('/dev/ttyUSB0')
+
 	def __init__(self, *args, **kwargs):
 		SimpleHTTPServer.SimpleHTTPRequestHandler.__init__(self, *args, **kwargs)
 
@@ -14,59 +17,63 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		pass
 
 	def do_GET(self):
-		if self.isBadHTCPCPRequest():
+		if self.is_bad_HTCPCP_request():
 			return
 	
 	def do_POST(self):
-		if self.isBadHTCPCPRequest():
+		if self.is_bad_HTCPCP_request():
 			return
 		self.do_BREW()
 
 	def do_PROPFIND(self):
-		if self.isBadHTCPCPRequest():
+		if self.is_bad_HTCPCP_request():
 			return
 
 
 	def do_WHEN(self):
-		if self.isBadHTCPCPRequest():
+		if self.is_bad_HTCPCP_request():
 			return
 
 
 	def do_BREW(self):
-		if self.isBadHTCPCPRequest():
+		if self.is_bad_HTCPCP_request():
 			return
 		
-		#print self.headers.getheader('content-type')
-
 		length = int(self.headers.getheader('content-length'))        
-		data_string = self.rfile.read(length)
-		if data_string not in ["start", "stop"]:
-			self.send_error(400, 'The data must be "start" or "stop" for this method.')
+		data_string = self.rfile.read(length).strip()
+		if self.headers.getheader('content-type').strip() != "message/coffeepot":
+			if data_string == "start":
+				pass
+			elif data_string == "stop":
+				pass
+			else:
+				self.send_error(400, "The content-type header is not correctly set for this body.")
+				self.end_headers()
+				return
+		elif self.headers.getheader('content-type').strip() == "application/coffee-pot-command":
+			pass
+		else: #if the previous two if are false, there is error that 
+			self.send_error(400, "The content-type is not valid for this coffee pot.")
 			self.end_headers()
 			return
-		elif self.headers.getheader('content-type').strip() != "message/coffeepot":
-			self.send_error(400, "The content-type header is not correctly setted.")
-			self.end_headers()
-			return
-			
+
 		self.send_response(200)
 		self.end_headers()
 
-		if data_string == "start":
-			pass
-		elif data_string == "stop":
-			pass
+	
+	def send_safe_header(self, condition = 'yes'):
+		self.send_header("Safe", condition)
 
-	def isBadHTCPCPRequest(self):
-		return self.isTeapot() or self.isNotAcceptable()
+	def is_bad_HTCPCP_request(self):
+		return self.is_teapot() or self.is_not_acceptable()
 
-	def isTeapot(self):
+	def is_teapot(self):
 		if TEAPOT == True:
 			self.send_error(418, "I'm a teapot")
 			self.end_headers()
 		return TEAPOT
 
-	def isNotAcceptable(self):
+	def is_not_acceptable(self):
 		accept_additions = self.headers.getheader("Accept-Additions")
 		if accept_additions is not None and accept_additions.strip():
 			self.send_error(406, "Not Acceptable")
@@ -75,13 +82,14 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		
 		return False
 
-try:
-	httpd = SocketServer.ThreadingTCPServer(('localhost', PORT),HTCPCPDImpl)
-	
-	print "serving at port", PORT
-	httpd.serve_forever()
-except KeyboardInterrupt:
-	httpd.socket.close() 
-finally:
-	httpd.server_close()
+
+#try:
+#	httpd = SocketServer.ThreadingTCPServer(('localhost', PORT),HTCPCPDImpl)
+#	
+#	print "serving at port", PORT
+#	httpd.serve_forever()
+#except KeyboardInterrupt:
+#	httpd.socket.close() 
+#finally:
+#	httpd.server_close()
 

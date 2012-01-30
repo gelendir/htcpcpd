@@ -18,7 +18,7 @@ IS_COFFEE_BREWING = {
 WATER_STATUS = {
 	'message' : 'I CAN HAZ MOAR WATER ?',
 	'statuses' : {
-		'good' : '200 I HAZ [0-9]+ LEETEARZ',
+		'good' : '200 I HAZ ([0-9]+) LEETEARZ',
 		'bad' : '400 OE NOES !1! NO MOAR WATERZ'
 	}
 }
