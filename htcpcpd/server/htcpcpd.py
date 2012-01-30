@@ -2,13 +2,13 @@
 
 import SocketServer
 import SimpleHTTPServer
-from api import *
+#from api import *
 
 PORT = 8000
 TEAPOT = False
 
 class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
-	pot = CoffeePot('/dev/ttyUSB0')
+	#pot = CoffeePot('/dev/ttyUSB0')
 
 	def __init__(self, *args, **kwargs):
 		SimpleHTTPServer.SimpleHTTPRequestHandler.__init__(self, *args, **kwargs)
@@ -41,25 +41,28 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		
 		length = int(self.headers.getheader('content-length'))        
 		data_string = self.rfile.read(length).strip()
-		if self.headers.getheader('content-type').strip() != "message/coffeepot":
+		if self.headers.getheader('content-type').strip() == "message/coffeepot":
 			if data_string == "start":
-				pass
+				self.send_OK("The coffee pot is started.")
 			elif data_string == "stop":
-				pass
+				self.send_OK("The coffee pot is stopped.")
 			else:
-				self.send_error(400, "The content-type header is not correctly set for this body.")
-				self.end_headers()
+				self.error("The content-type header is not correctly set for this body.")
 				return
 		elif self.headers.getheader('content-type').strip() == "application/coffee-pot-command":
 			pass
-		else: #if the previous two if are false, there is error that 
-			self.send_error(400, "The content-type is not valid for this coffee pot.")
-			self.end_headers()
+		else:
+			self.error("The content-type is not valid for this coffee pot.")
 			return
 
+	def send_OK(self, response):
 		self.send_response(200)
 		self.end_headers()
+		self.wfile.write(response)
 
+	def error(self, error):
+		self.send_error(400, error)
+		self.end_headers()
 	
 	def send_safe_header(self, condition = 'yes'):
 		self.send_header("Safe", condition)
@@ -83,13 +86,13 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		return False
 
 
-#try:
-#	httpd = SocketServer.ThreadingTCPServer(('localhost', PORT),HTCPCPDImpl)
-#	
-#	print "serving at port", PORT
-#	httpd.serve_forever()
-#except KeyboardInterrupt:
-#	httpd.socket.close() 
-#finally:
-#	httpd.server_close()
+try:
+	httpd = SocketServer.ThreadingTCPServer(('localhost', PORT),HTCPCPDImpl)
+	
+	print "serving at port", PORT
+	httpd.serve_forever()
+except KeyboardInterrupt:
+	httpd.socket.close() 
+finally:
+	httpd.server_close()
 
