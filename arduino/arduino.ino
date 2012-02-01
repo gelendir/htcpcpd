@@ -3,8 +3,8 @@
 /*
  * General pins
  */
-const int PIN_BOILER = 0;
-const int PIN_POT = 1;
+const int PIN_BOILER = 7;
+const int PIN_POT = 6;
 
 /*
  * Water pins
@@ -20,11 +20,30 @@ const int WATER_PINS[NB_WATER_PINS] = { PIN_4L, PIN_8L, PIN_12L };
 /*
  * Commands
  */
-const char COMMAND_BREW_COFFEE[]    PROGMEM = "BREW DIS COFFEE PLZ";
-const char COMMAND_POT_STATE[]      PROGMEM = "O HAI! I WAN MAH BUKKET ! U HAZ BUKKET ?";
-const char COMMAND_WATER_QUANTITY[] PROGMEM = "I CAN HAZ MOAR WATER ?";
-const char COMMAND_POT_PRESENCE[]   PROGMEM = "O HAI! I WAN MAH BUKKET ! U HAZ BUKKET ?";
-const char COMMAND_STOP_BREWING[]   PROGMEM = "OUCH OUCH! TIZ COFFEE IZ HAWT! STOP!";
+const char COMMAND_BREW_COFFEE[]        PROGMEM = "BREW DIS COFFEE PLZ";
+const char COMMAND_BREWING_STATE[]      PROGMEM = "AR U BREWING COFFEEZ ?";
+const char COMMAND_WATER_QUANTITY[]     PROGMEM = "I CAN HAZ MOAR WATER ?";
+const char COMMAND_POT_PRESENCE[]       PROGMEM = "O HAI! I WAN MAH BUKKET ! U HAZ BUKKET ?";
+const char COMMAND_STOP_BREWING[]       PROGMEM = "OUCH OUCH! TIZ COFFEE IZ HAWT! STOP!";
+
+/* Responses */
+const char RESPONSE_STR_POT_AVAILABLE[]     PROGMEM = "I HAZ YUR BUKKET";
+const char RESPONSE_STR_POT_NOT_AVAILABLE[] PROGMEM = "I AINT HAZ NO BUKKET";
+
+struct Response {
+    const int code;
+    const char* message;
+};
+
+struct Response RESPONSE_POT_AVAILABLE = {
+    200,
+    RESPONSE_STR_POT_AVAILABLE
+};
+
+struct Response RESPONSE_POT_NOT_AVAILABLE = {
+    404,
+    RESPONSE_STR_POT_NOT_AVAILABLE
+};
 
 /*
  * Other constants
@@ -41,20 +60,35 @@ bool boilerOn = false;
  */
 String readCommand();
 boolean isCommand( String input, const char* command );
-
+boolean isPotPresent();
+void sendResponse();
+void processPotState();
 
 void setup() {
+
     Serial.begin(9600);
-    Serial.println("booted");
+
+    pinMode( PIN_POT, INPUT );
+    pinMode( PIN_BOILER, OUTPUT );
+
+    for( int i = 0; i < NB_WATER_PINS; i++ ) {
+        pinMode( WATER_PINS[i], INPUT );
+    }
+
+    Serial.println("BOOTED");
 }
 
 void loop() {
 
-    Serial.println("Waiting for command");
-    String command = readCommand();
-    Serial.println( command );
-    boolean recognized = isCommand( command, COMMAND_POT_STATE );
-    Serial.println( recognized );
+    if( Serial.available() ) {
+
+        String command = readCommand();
+
+        if( isCommand( command, COMMAND_POT_PRESENCE ) ) {
+            processPotPresence();
+        }
+
+    }
 
 }
 
@@ -97,6 +131,41 @@ boolean isCommand( String input, const char* command ) {
     }
 
     return same;
+
+}
+
+boolean isPotPresent() {
+
+    boolean state = digitalRead( PIN_POT );
+    return state;
+
+}
+
+void sendResponse( struct Response response  ) {
+
+    const char* message = response.message;
+
+    Serial.print( response.code );
+    Serial.print(" ");
+
+    char character = (char)pgm_read_byte( message );
+    while( character != '\0' ) {
+        Serial.print( character );
+        message++;
+        character = (char)pgm_read_byte( message );
+    }
+
+    Serial.println();
+
+}
+
+void processPotPresence() {
+
+    if( isPotPresent() ) {
+        sendResponse( RESPONSE_POT_AVAILABLE );
+    } else {
+        sendResponse( RESPONSE_POT_NOT_AVAILABLE );
+    }
 
 }
 
