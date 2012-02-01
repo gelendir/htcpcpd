@@ -40,8 +40,8 @@ class CoffeePot:
 	def isEmpty(self):
 		return self.getNbLitres() == 0
 	
-	def hasBucket(self):
-		return self.sendAndReceive(consts.BUCKET_STATUS)
+	def hasPot(self):
+		return self.sendAndReceive(consts.POT_STATUS)
 		
 	def sendAndReceive(self, message):	
 		self.pot.write(message['message'] + '\n')

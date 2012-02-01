@@ -10,23 +10,33 @@ config = ConfigParser.RawConfigParser()
 config.read('htcpcpd.ini')
 
 SERIAL_DEVICE = config.get('htcpcpd', 'device')
-PORT = config.getint('htcpcpd', 'port') #8000
-TEAPOT = config.getboolean('htcpcpd', 'teapot') #False
+PORT = config.getint('htcpcpd', 'port') 
+TEAPOT = config.getboolean('htcpcpd', 'teapot') 
 
 class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
-	#pot = CoffeePot(SERIAL_DEVICE)
+	pot = CoffeePot(SERIAL_DEVICE)
 
 	def do_GET(self):
 		if self.is_bad_HTCPCP_request():
 			return
+		
 		page = self.get_called_page()
 		if page == "status":
-			self.send_OK("The coffee is not brewing.")
+			if self.pot.isCoffeeBrewing():
+				self.send_OK("The coffee is brewing.")
+			else:
+				self.send_OK("The coffee is not brewing.")	
 		elif page == "water":
-			#self.send_OK("There is no water in the coffee pot.")
-			self.send_OK("There is 2 litres of water in the coffee pot.")
-		elif page == "bucket":
-			self.send_OK("The bucket is in position.")
+			litres = self.pot.getNbLitres()
+			if litres == 0:
+				self.send_OK("There is no water in the coffee pot.")
+			else:
+				self.send_OK("There is " + str(litres) + " litres of water in the coffee pot.")
+		elif page == "pot":
+			if self.pot.hasPot():
+				self.send_OK("The coffee pot is in position.")
+			else:
+				self.send_OK("The coffee pot is not in position.")
 		else:
 			self.send_error(404, "This page is unavailable")
 			self.end_headers()
@@ -34,7 +44,7 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 			<ul>
 				<li><a href="/status">Status of brewing</a></li>
 				<li><a href="/water">Quantity of water in the coffee cup</a></li>
-				<li><a href="/bucket">Status of the bucket</a></li>
+				<li><a href="/pot">Status of the coffee pot</a></li>
 			</ul>
 			""")
 			
@@ -46,12 +56,12 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	def do_PROPFIND(self):
 		if self.is_bad_HTCPCP_request():
 			return
-		self.send_OK()
+		self.send_not_implemented("This coffee pot has no metadata associated.")
 
 	def do_WHEN(self):
 		if self.is_bad_HTCPCP_request():
 			return
-		self.send_OK()
+		self.send_not_implemented("This coffee pot isn't able to add milk to your coffee.")
 
 
 	def do_BREW(self):
@@ -62,13 +72,19 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		data_string = self.rfile.read(length).strip()
 		if self.headers.getheader('content-type').strip() == "message/coffeepot":
 			if data_string == "start":
-				self.send_OK("The coffee pot is started.")
+				if self.pot.brew():
+					self.send_OK("The coffee is started.")
+				else:
+					self.error("The coffee pot is already started.")
 			elif data_string == "stop":
-				self.send_OK("The coffee pot is stopped.")
+				if self.pot.stopBrewing():
+					self.send_OK("The coffee pot is stopped.")
+				else:
+					self.error("The coffee pot is already stopped.")
 			else:
 				self.error("The content-type header is not correctly set for this body.")
 		elif self.headers.getheader('content-type').strip() == "application/coffee-pot-command":
-			pass
+			self.send_not_implemented("There is no coffee-pot-command available.")
 		else:
 			self.error("The content-type is not valid for this coffee pot.")
 
@@ -79,6 +95,11 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
 	def error(self, error, message = ""):
 		self.send_error(400, error)
+		self.end_headers()
+		self.wfile.write(message)
+
+	def send_not_implemented(self, error, message = ""):
+		self.send_error(501, error)
 		self.end_headers()
 		self.wfile.write(message)
 	
