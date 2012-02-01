@@ -23,7 +23,7 @@ WATER_STATUS = {
 	}
 }
 
-BUCKET_STATUS = {
+POT_STATUS = {
 	'message' : 'O HAI! I WAN MAH BUKKET ! U HAZ BUKKET ?',
 	'statuses' : {
 		'good' : '200 I HAZ YUR BUKKET',

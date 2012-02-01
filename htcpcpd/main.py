@@ -4,7 +4,7 @@
 from server import *
 
 try:
-	httpd = SocketServer.ThreadingTCPServer(('localhost', PORT),HTCPCPDImpl)
+	httpd = SocketServer.ThreadingTCPServer(('localhost', PORT), HTCPCPDImpl)
 
 	print "serving at port", PORT
 	httpd.serve_forever()

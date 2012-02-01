@@ -37,11 +37,11 @@ class HTCPCPClient(Cmd):
 		"""
 		self.curl_query("water")
 	
-	def do_bucket(self, line):
+	def do_pot(self, line):
 		""" 
-		Show if the bucket is in the coffee pot or not.
+		Show if the pot is in the machine or not.
 		"""
-		self.curl_query("bucket")
+		self.curl_query("pot")
 
 	def do_resume(self, line):
 		""" 
