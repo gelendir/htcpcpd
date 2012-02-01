@@ -3,8 +3,8 @@
 /*
  * General pins
  */
-const int PIN_BOILER = 7;
-const int PIN_POT = 6;
+const int PIN_BOILER = 8;
+const int PIN_POT = 7;
 
 /*
  * Water pins
@@ -16,6 +16,7 @@ const int PIN_12L = 4;
 const int NB_WATER_PINS = 3;
 
 const int WATER_PINS[NB_WATER_PINS] = { PIN_4L, PIN_8L, PIN_12L };
+const int WATER_LITER_INCREMENT = 4;
 
 /*
  * Commands
@@ -27,8 +28,15 @@ const char COMMAND_POT_PRESENCE[]       PROGMEM = "O HAI! I WAN MAH BUKKET ! U H
 const char COMMAND_STOP_BREWING[]       PROGMEM = "OUCH OUCH! TIZ COFFEE IZ HAWT! STOP!";
 
 /* Responses */
-const char RESPONSE_STR_POT_AVAILABLE[]     PROGMEM = "I HAZ YUR BUKKET";
-const char RESPONSE_STR_POT_NOT_AVAILABLE[] PROGMEM = "I AINT HAZ NO BUKKET";
+const char RESPONSE_STR_POT_AVAILABLE[]             PROGMEM = "I HAZ YUR BUKKET";
+const char RESPONSE_STR_POT_NOT_AVAILABLE[]         PROGMEM = "I AINT HAZ NO BUKKET";
+const char RESPONSE_STR_WATER_QUANTITY[]            PROGMEM = "I HAZ % LEETEARZ";
+const char RESPONSE_STR_NO_WATER_LEFT[]             PROGMEM = "OE NOES !1! NO MOAR WATERZ";
+const char RESPONSE_STR_BREWING[]                   PROGMEM = "I'M BREWING COFFEEZ";
+const char RESPONSE_STR_NOT_BREWING[]               PROGMEM = "I AIN'T BREWING COFFEEZ";
+
+const char START_BOILER[] PROGMEM = "start";
+const char STOP_BOILER[] PROGMEM = "stop";
 
 struct Response {
     const int code;
@@ -43,6 +51,26 @@ struct Response RESPONSE_POT_AVAILABLE = {
 struct Response RESPONSE_POT_NOT_AVAILABLE = {
     404,
     RESPONSE_STR_POT_NOT_AVAILABLE
+};
+
+struct Response RESPONSE_WATER_QUANTITY = {
+    200,
+    RESPONSE_STR_WATER_QUANTITY
+};
+
+struct Response RESPONSE_NO_WATER_LEFT = {
+    404,
+    RESPONSE_STR_NO_WATER_LEFT
+};
+
+struct Response RESPONSE_NOT_BREWING = {
+    210,
+    RESPONSE_STR_NOT_BREWING
+};
+
+struct Response RESPONSE_BREWING = {
+    220,
+    RESPONSE_STR_BREWING
 };
 
 /*
@@ -62,7 +90,11 @@ String readCommand();
 boolean isCommand( String input, const char* command );
 boolean isPotPresent();
 void sendResponse();
+
+int nbWaterLiters();
+
 void processPotState();
+void processWaterQuantity();
 
 void setup() {
 
@@ -86,6 +118,16 @@ void loop() {
 
         if( isCommand( command, COMMAND_POT_PRESENCE ) ) {
             processPotPresence();
+        } else if ( isCommand( command, COMMAND_WATER_QUANTITY ) ) {
+            processWaterQuantity();
+        } else if( isCommand( command, COMMAND_BREWING_STATE ) ) {
+            processBrewingState();
+        } else if( isCommand( command, START_BOILER ) ) {
+            startBoiler();
+            Serial.println("boiler started");
+        } else if ( isCommand( command, STOP_BOILER ) ) {
+            stopBoiler();
+            Serial.println("boiler stoped");
         }
 
     }
@@ -141,7 +183,23 @@ boolean isPotPresent() {
 
 }
 
-void sendResponse( struct Response response  ) {
+int nbWaterLiters() {
+
+    int liters = 0;
+    bool on = true;
+
+    for( int i = 0; i < NB_WATER_PINS && on; i++ ) {
+        on = digitalRead( WATER_PINS[i] );
+        if( on ) {
+            liters += WATER_LITER_INCREMENT;
+        }
+    }
+
+    return liters;
+
+}
+
+void sendResponse( struct Response response, int arg = 0 ) {
 
     const char* message = response.message;
 
@@ -150,7 +208,13 @@ void sendResponse( struct Response response  ) {
 
     char character = (char)pgm_read_byte( message );
     while( character != '\0' ) {
-        Serial.print( character );
+
+        if( character == '%' ) {
+            Serial.print( arg );
+        } else {
+            Serial.print( character );
+        }
+
         message++;
         character = (char)pgm_read_byte( message );
     }
@@ -166,6 +230,41 @@ void processPotPresence() {
     } else {
         sendResponse( RESPONSE_POT_NOT_AVAILABLE );
     }
+
+}
+
+void processWaterQuantity() {
+
+    int liters = nbWaterLiters();
+    if( liters == 0 ) {
+        sendResponse( RESPONSE_NO_WATER_LEFT );
+    } else {
+        sendResponse( RESPONSE_WATER_QUANTITY, liters );
+    }
+
+}
+
+void processBrewingState() {
+
+    if( boilerOn ) {
+        sendResponse( RESPONSE_BREWING );
+    } else {
+        sendResponse( RESPONSE_NOT_BREWING );
+    }
+
+}
+
+void startBoiler() {
+
+    digitalWrite( PIN_BOILER, HIGH );
+    boilerOn = true;
+
+}
+
+void stopBoiler() {
+
+    digitalWrite( PIN_BOILER, LOW );
+    boilerOn = false;
 
 }
 
