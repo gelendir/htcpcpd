@@ -33,6 +33,7 @@ class CoffeePot:
 		line = self.pot.readline().strip()
 		
 		if line != consts.WATER_STATUS['statuses']['bad']:
+			print line
 			return int(re.findall(consts.WATER_STATUS['statuses']['good'], line)[0])
 		else:
 			return 0

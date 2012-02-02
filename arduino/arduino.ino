@@ -35,8 +35,8 @@ const char RESPONSE_STR_NO_WATER_LEFT[]             PROGMEM = "OE NOES !1! NO MO
 const char RESPONSE_STR_BREWING[]                   PROGMEM = "I'M BREWING COFFEEZ";
 const char RESPONSE_STR_NOT_BREWING[]               PROGMEM = "I AIN'T BREWING COFFEEZ";
 
-const char START_BOILER[] PROGMEM = "start";
-const char STOP_BOILER[] PROGMEM = "stop";
+const char START_BOILER[] PROGMEM = "BREW DIS COFFEE PLZ";
+const char STOP_BOILER[] PROGMEM = "OUCH OUCH! TIZ COFFEE IZ HAWT! STOP!";
 
 struct Response {
     const int code;
@@ -59,7 +59,7 @@ struct Response RESPONSE_WATER_QUANTITY = {
 };
 
 struct Response RESPONSE_NO_WATER_LEFT = {
-    404,
+    400,
     RESPONSE_STR_NO_WATER_LEFT
 };
 
