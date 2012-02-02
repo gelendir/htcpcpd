@@ -60,7 +60,7 @@ struct Response RESPONSE_WATER_QUANTITY = {
 };
 
 struct Response RESPONSE_NO_WATER_LEFT = {
-    404,
+    400,
     RESPONSE_STR_NO_WATER_LEFT
 };
 
