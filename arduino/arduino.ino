@@ -34,9 +34,10 @@ const char RESPONSE_STR_WATER_QUANTITY[]            PROGMEM = "I HAZ % LEETEARZ"
 const char RESPONSE_STR_NO_WATER_LEFT[]             PROGMEM = "OE NOES !1! NO MOAR WATERZ";
 const char RESPONSE_STR_BREWING[]                   PROGMEM = "I'M BREWING COFFEEZ";
 const char RESPONSE_STR_NOT_BREWING[]               PROGMEM = "I AIN'T BREWING COFFEEZ";
-
-const char START_BOILER[] PROGMEM = "start";
-const char STOP_BOILER[] PROGMEM = "stop";
+const char RESPONSE_STR_STARTED_BREWING[]           PROGMEM = "YES DIS COFFEE POT IZ BREWINGZ";
+const char RESPONSE_STR_ALREADY_BREWING[]           PROGMEM = "I HAZ ALREADY COFFEE A BREWING";
+const char RESPONSE_STR_STOPPED_BREWING[]           PROGMEM = "COFFEE IZ STOP";
+const char RESPONSE_STR_CANNOT_STOP_BREWING[]       PROGMEM = "NO COFFEE BREWIN";
 
 struct Response {
     const int code;
@@ -73,15 +74,37 @@ struct Response RESPONSE_BREWING = {
     RESPONSE_STR_BREWING
 };
 
+struct Response RESPONSE_STARTED_BREWING = {
+    200,
+    RESPONSE_STR_STARTED_BREWING
+};
+
+struct Response RESPONSE_ALREADY_BREWING = {
+    500,
+    RESPONSE_STR_ALREADY_BREWING
+};
+
+struct Response RESPONSE_STOPPED_BREWING = {
+    200,
+    RESPONSE_STR_STOPPED_BREWING
+};
+
+struct Response RESPONSE_CANNOT_STOP_BREWING = {
+    400,
+    RESPONSE_STR_CANNOT_STOP_BREWING
+};
+
 /*
  * Other constants
  */
 const char NEWLINE = '\n';
+const long TIMER_MAX_MILLISECS = 5L * 60L * 1000L;
 
 /*
  *Global variables
  */
 bool boilerOn = false;
+long boilerTimestamp = 0;
 
 /*
  * prototypes
@@ -90,12 +113,16 @@ String readCommand();
 boolean isCommand( String input, const char* command );
 boolean isPotPresent();
 void sendResponse();
-
 int nbWaterLiters();
-
 void processPotState();
 void processWaterQuantity();
+void processStartBrewing();
+void processStopBrewing();
+void checkBoilerTimer();
 
+/*
+ * Main program
+ */
 void setup() {
 
     Serial.begin(9600);
@@ -112,6 +139,8 @@ void setup() {
 
 void loop() {
 
+    checkBoilerTimer();
+
     if( Serial.available() ) {
 
         String command = readCommand();
@@ -122,12 +151,10 @@ void loop() {
             processWaterQuantity();
         } else if( isCommand( command, COMMAND_BREWING_STATE ) ) {
             processBrewingState();
-        } else if( isCommand( command, START_BOILER ) ) {
-            startBoiler();
-            Serial.println("boiler started");
-        } else if ( isCommand( command, STOP_BOILER ) ) {
-            stopBoiler();
-            Serial.println("boiler stoped");
+        } else if( isCommand( command, COMMAND_BREW_COFFEE ) ) {
+            processStartBrewing();
+        } else if ( isCommand( command, COMMAND_STOP_BREWING ) ) {
+            processStopBrewing();
         }
 
     }
@@ -254,9 +281,29 @@ void processBrewingState() {
 
 }
 
+void checkBoilerTimer() {
+
+    if( boilerOn ) {
+
+        long currentTimestamp = millis();
+        int liters = nbWaterLiters();
+        liters = 4;
+
+        if( liters == 0 ||
+            currentTimestamp >= boilerTimestamp + TIMER_MAX_MILLISECS
+        ) {
+            stopBoiler();
+        } else {
+        }
+
+    }
+
+}
+
 void startBoiler() {
 
     digitalWrite( PIN_BOILER, HIGH );
+    boilerTimestamp = millis();
     boilerOn = true;
 
 }
@@ -264,7 +311,30 @@ void startBoiler() {
 void stopBoiler() {
 
     digitalWrite( PIN_BOILER, LOW );
+    boilerTimestamp = 0;
     boilerOn = false;
+
+}
+
+void processStartBrewing() {
+
+    if( boilerOn ) {
+        sendResponse( RESPONSE_ALREADY_BREWING );
+    } else {
+        startBoiler();
+        sendResponse( RESPONSE_STARTED_BREWING );
+    }
+
+}
+
+void processStopBrewing() {
+
+    if( !boilerOn ) {
+        sendResponse( RESPONSE_CANNOT_STOP_BREWING );
+    } else {
+        stopBoiler();
+        sendResponse( RESPONSE_STOPPED_BREWING );
+    }
 
 }
 
