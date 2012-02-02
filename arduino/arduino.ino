@@ -9,14 +9,19 @@ const int PIN_POT = 7;
 /*
  * Water pins
  */
-const int PIN_4L = 2;
-const int PIN_8L = 3;
-const int PIN_12L = 4;
+struct WaterPin {
+    const int pin;
+    const int nbLiters;
+};
 
-const int NB_WATER_PINS = 3;
+const int NB_WATER_PINS = 4;
 
-const int WATER_PINS[NB_WATER_PINS] = { PIN_4L, PIN_8L, PIN_12L };
-const int WATER_LITER_INCREMENT = 4;
+const struct WaterPin WATER_PINS[] = {
+    { 2,1 },
+    { 3,4 },
+    { 4,8 },
+    { 5,12 }
+};
 
 /*
  * Commands
@@ -128,10 +133,13 @@ void setup() {
     Serial.begin(9600);
 
     pinMode( PIN_POT, INPUT );
+    digitalWrite( PIN_POT, LOW );
+
     pinMode( PIN_BOILER, OUTPUT );
 
     for( int i = 0; i < NB_WATER_PINS; i++ ) {
-        pinMode( WATER_PINS[i], INPUT );
+        pinMode( WATER_PINS[i].pin, INPUT );
+        digitalWrite( WATER_PINS[i].pin, LOW );
     }
 
     Serial.println("BOOTED");
@@ -216,9 +224,9 @@ int nbWaterLiters() {
     bool on = true;
 
     for( int i = 0; i < NB_WATER_PINS && on; i++ ) {
-        on = digitalRead( WATER_PINS[i] );
+        on = digitalRead( WATER_PINS[i].pin );
         if( on ) {
-            liters += WATER_LITER_INCREMENT;
+            liters = WATER_PINS[i].nbLiters;
         }
     }
 
@@ -287,7 +295,6 @@ void checkBoilerTimer() {
 
         long currentTimestamp = millis();
         int liters = nbWaterLiters();
-        liters = 4;
 
         if( liters == 0 ||
             currentTimestamp >= boilerTimestamp + TIMER_MAX_MILLISECS
