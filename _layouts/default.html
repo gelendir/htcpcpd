@@ -42,6 +42,21 @@
                 {% endfor %}
 
             </ul>
+
+            <ul class="nav list well">
+
+                <li class="nav-header">
+                    Pages
+                </li>
+                {% for page in site.pages %}
+                    {% if page.category == "page" %}
+                        <li>
+                            <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
         </section>
 
         <section class="fluid-content well post">
