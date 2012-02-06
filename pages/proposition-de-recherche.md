@@ -1,6 +1,7 @@
 ---
 title: Proposition de recherche
 layout: default
+category: page
 ---
 
 Automatisation du contrôle d’une cafetière
