@@ -1,6 +1,9 @@
 #!/usr/bin/env python2
+"""
+This file start the HTCPCP server and deamonize it.
+Author: Frédérik Paradis
+"""
 
-#from api import *
 from server import *
 
 try:
