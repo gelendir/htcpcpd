@@ -12,15 +12,16 @@ const int PIN_POT = 7;
 struct WaterPin {
     const int pin;
     const int nbLiters;
+    const int minReading;
 };
 
 const int NB_WATER_PINS = 4;
 
 const struct WaterPin WATER_PINS[] = {
-    { 2,1 },
-    { 3,4 },
-    { 4,8 },
-    { 5,12 }
+    { A0, 1, 10 },
+    { A1, 4, 10 },
+    { A2, 8, 10 },
+    { A3, 12, 10 }
 };
 
 /*
@@ -103,7 +104,7 @@ struct Response RESPONSE_CANNOT_STOP_BREWING = {
  * Other constants
  */
 const char NEWLINE = '\n';
-const long TIMER_MAX_MILLISECS = 5L * 60L * 1000L;
+const long TIMER_MAX_MILLISECS = 12L * 60L * 1000L;
 
 /*
  *Global variables
@@ -132,14 +133,16 @@ void setup() {
 
     Serial.begin(9600);
 
+    //setup pot pin as input mode with interal pull-down resistor
     pinMode( PIN_POT, INPUT );
     digitalWrite( PIN_POT, LOW );
 
+    //setup boiler pin as output
     pinMode( PIN_BOILER, OUTPUT );
 
+    //setup water pins as input
     for( int i = 0; i < NB_WATER_PINS; i++ ) {
         pinMode( WATER_PINS[i].pin, INPUT );
-        digitalWrite( WATER_PINS[i].pin, LOW );
     }
 
     Serial.println("BOOTED");
@@ -223,8 +226,11 @@ int nbWaterLiters() {
     int liters = 0;
     bool on = true;
 
-    for( int i = 0; i < NB_WATER_PINS && on; i++ ) {
-        on = digitalRead( WATER_PINS[i].pin );
+    for( int i = 0; i < NB_WATER_PINS && on; ++i ) {
+
+        int value = analogRead( WATER_PINS[i].pin );
+        on = ( value >= WATER_PINS[i].minReading );
+
         if( on ) {
             liters = WATER_PINS[i].nbLiters;
         }
@@ -327,6 +333,8 @@ void processStartBrewing() {
 
     if( boilerOn ) {
         sendResponse( RESPONSE_ALREADY_BREWING );
+    } else if ( nbWaterLiters() == 0 ) {
+        sendResponse( RESPONSE_NO_WATER_LEFT );
     } else {
         startBoiler();
         sendResponse( RESPONSE_STARTED_BREWING );
