@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 """
 This file contains the CoffeePot class.
 Author: Frédérik Paradis

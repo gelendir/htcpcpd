@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 """
 This file contains the HTCPCPDImpl class.
 Author: Frédérik Paradis
@@ -28,7 +29,7 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	RFC (http://tools.ietf.org/html/rfc2324) for more detais.
 	"""
 
-	pot = CoffeePot(SERIAL_DEVICE)
+	pot = None #CoffeePot(SERIAL_DEVICE)
 	"""
 	The static CoffeePot instance for the HTCPCP server.
 	"""
@@ -115,7 +116,7 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		
 		self.send_not_implemented("This coffee pot has no metadata associated.")
 
-	def do_WHEN(self):i
+	def do_WHEN(self):
 		"""
 		This method implement the WHEN HTCPCP method. It is supposed 
 		to send when the milk will be added to the coffee. It actually
