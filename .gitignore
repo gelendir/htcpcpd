@@ -1,2 +1,8 @@
 *.pyc
 _site
+.*.swp
+*~
+htcpcpd/build/lib*
+htcpcpd/*.egg-info
+htcpcpd/*.egg
+htcpcpd/dist

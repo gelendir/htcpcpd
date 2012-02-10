@@ -7,6 +7,8 @@ Author: Frédérik Paradis
 
 import fcntl
 import os
+import sys
+import argparse
 
 class PidFile(object):
 	"""Context manager that locks a pid file.  Implemented as class
@@ -44,17 +46,44 @@ class PidFile(object):
 from server import *
 import daemon
 
-#PID_FILE = '/var/run/htcpcpd.pid'
-PID_FILE = '/home/fredy/htcpcpd.pid'
+def argparser():
 
-with daemon.DaemonContext(files_preserve=[HTCPCPDImpl.pot.pot.fileno()], pidfile=PidFile(PID_FILE), stderr=open("/home/fredy/log.txt", "w+")):
-	try:
-		httpd = SocketServer.ThreadingTCPServer(('localhost', PORT), HTCPCPDImpl)
-	
-		#print "serving at port", PORT
-		httpd.serve_forever()
-	except KeyboardInterrupt:
-		httpd.socket.close() 
-	finally:
-		httpd.server_close()
+	parser = argparse.ArgumentParser(description='Load HTCPCPD Server')
+	parser.add_argument('-c', '--config', dest='configfile')
+
+	return parser
+
+def main():
+
+	parser = argparser()
+	options = parser.parse_args(sys.argv[1:])
+
+	CONFIG_PATH = options.configfile
+
+	config = ConfigParser.RawConfigParser()
+	config.read(CONFIG_PATH)
+
+	LOG_PATH = config.get('htcpcpd', 'pidfile')
+	PID_FILE = config.get('htcpcpd', 'logfile')
+
+	SERIAL_DEVICE = config.get('htcpcpd', 'device')
+	PORT = config.getint('htcpcpd', 'port') 
+
+	HTCPCPDImpl.initconfig(config)
+
+	with daemon.DaemonContext(
+			files_preserve=[HTCPCPDImpl.pot.pot.fileno()],
+			pidfile=PidFile(PID_FILE), stderr=open(LOG_PATH, "w+")):
+		try:
+			httpd = SocketServer.ThreadingTCPServer(('localhost', PORT), HTCPCPDImpl)
+
+			#print "serving at port", PORT
+			httpd.serve_forever()
+		except KeyboardInterrupt:
+			httpd.socket.close() 
+		finally:
+			httpd.server_close()
+
+if __name__ == "__main__":
+	main()
 

@@ -129,7 +129,9 @@ if len(sys.argv) in [2, 3]:
 			print "usage: " + sys.argv[0] + " [host [port]]"
 			sys.exit(1)
 
-#We start the command line
-client = HTCPCPClient((host, port))
-client.cmdloop()
+
+if __name__ == "__main__":
+    #We start the command line
+    client = HTCPCPClient((host, port))
+    client.cmdloop()
 

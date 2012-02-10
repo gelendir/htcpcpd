@@ -9,17 +9,7 @@ import SocketServer
 import SimpleHTTPServer
 import urllib
 import ConfigParser
-from api import *
-
-
-#Parsing the ini file
-config = ConfigParser.RawConfigParser()
-config.read('htcpcpd.ini')
-
-SERIAL_DEVICE = config.get('htcpcpd', 'device')
-PORT = config.getint('htcpcpd', 'port') 
-TEAPOT = config.getboolean('htcpcpd', 'teapot') 
-
+from htcpcpd.api import *
 
 class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	"""
@@ -29,10 +19,15 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	RFC (http://tools.ietf.org/html/rfc2324) for more detais.
 	"""
 
-	pot = CoffeePot(SERIAL_DEVICE)
-	"""
-	The static CoffeePot instance for the HTCPCP server.
-	"""
+	@classmethod
+	def initconfig(cls, config):
+
+		cls.SERIAL_DEVICE = config.get('htcpcpd', 'device')
+		cls.TEAPOT = config.getboolean('htcpcpd', 'teapot')
+		cls.pot = CoffeePot(cls.SERIAL_DEVICE)
+		"""
+		The static CoffeePot instance for the HTCPCP server.
+		"""
 
 	def do_GET(self):
 		"""
@@ -233,10 +228,10 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		False in other case.
 		"""
 
-		if TEAPOT == True:
+		if self.TEAPOT == True:
 			self.send_error(418, "I'm a teapot")
 			self.end_headers()
-		return TEAPOT
+		return self.TEAPOT
 
 	def is_not_acceptable(self):
 		"""
