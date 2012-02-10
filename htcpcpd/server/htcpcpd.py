@@ -29,7 +29,7 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	RFC (http://tools.ietf.org/html/rfc2324) for more detais.
 	"""
 
-	pot = None #CoffeePot(SERIAL_DEVICE)
+	pot = CoffeePot(SERIAL_DEVICE)
 	"""
 	The static CoffeePot instance for the HTCPCP server.
 	"""

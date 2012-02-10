@@ -25,7 +25,7 @@ class CoffeePot:
 		self.pot = serial.Serial(device, 9600)
 		if not self.pot.isOpen():
 			raise Exception('Coffee pot is not connected!')
-	
+
 	def __del__(self):
 		"""
 		This method close the connection to the Arduino.
