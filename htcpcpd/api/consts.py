@@ -19,8 +19,8 @@ BREW_COFFEE = {
 IS_COFFEE_BREWING = {
 	'message' : 'AR U BREWING COFFEEZ ?',
 	'statuses' : {
-		'good' : '210 I AIN\'T BREWING COFFEEZ',
-		'bad' : '220 I\'M BREWING COFFEEZ'}
+		'good' : '220 I\'M BREWING COFFEEZ',
+		'bad' : '210 I AIN\'T BREWING COFFEEZ'}
 }
 
 #Used to know how much water there is in the coffee pot.

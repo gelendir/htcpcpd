@@ -47,7 +47,7 @@ import daemon
 #PID_FILE = '/var/run/htcpcpd.pid'
 PID_FILE = '/home/fredy/htcpcpd.pid'
 
-with daemon.DaemonContext(pidfile=PidFile(PID_FILE)):
+with daemon.DaemonContext(files_preserve=[HTCPCPDImpl.pot.pot.fileno()], pidfile=PidFile(PID_FILE), stderr=open("/home/fredy/log.txt", "w+")):
 	try:
 		httpd = SocketServer.ThreadingTCPServer(('localhost', PORT), HTCPCPDImpl)
 	
