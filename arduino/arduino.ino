@@ -145,7 +145,7 @@ void setup() {
         pinMode( WATER_PINS[i].pin, INPUT );
     }
 
-    Serial.println("BOOTED");
+    //Serial.println("BOOTED");
 }
 
 void loop() {

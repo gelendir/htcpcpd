@@ -7,6 +7,8 @@ Author: Frédérik Paradis
 
 import fcntl
 import os
+import sys
+import argparse
 
 class PidFile(object):
 	"""Context manager that locks a pid file.  Implemented as class
@@ -44,21 +46,34 @@ class PidFile(object):
 from server import *
 import daemon
 
-#PID_FILE = '/var/run/htcpcpd.pid'
-PID_FILE = '/home/fredy/htcpcpd.pid'
-CONFIG_PATH = 'htcpcpd.ini'
+def argparser():
+
+	parser = argparse.ArgumentParser(description='Load HTCPCPD Server')
+	parser.add_argument('-c', '--config', dest='configfile')
+
+	return parser
 
 def main():
 
+	parser = argparser()
+	options = parser.parse_args(sys.argv[1:])
+
+	CONFIG_PATH = options.configfile
+
 	config = ConfigParser.RawConfigParser()
 	config.read(CONFIG_PATH)
+
+	LOG_PATH = config.get('htcpcpd', 'pidfile')
+	PID_FILE = config.get('htcpcpd', 'logfile')
 
 	SERIAL_DEVICE = config.get('htcpcpd', 'device')
 	PORT = config.getint('htcpcpd', 'port') 
 
 	HTCPCPDImpl.initconfig(config)
 
-	with daemon.DaemonContext(pidfile=PidFile(PID_FILE)):
+	with daemon.DaemonContext(
+			files_preserve=[HTCPCPDImpl.pot.pot.fileno()],
+			pidfile=PidFile(PID_FILE), stderr=open(LOG_PATH, "w+")):
 		try:
 			httpd = SocketServer.ThreadingTCPServer(('localhost', PORT), HTCPCPDImpl)
 
