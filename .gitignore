@@ -5,3 +5,4 @@ _site
 htcpcpd/build/lib*
 htcpcpd/*.egg-info
 htcpcpd/*.egg
+htcpcpd/dist
