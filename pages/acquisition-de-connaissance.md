@@ -41,6 +41,59 @@ void loop()
 }
 {% endhighlight %}
 
+Programmation série en Python
+-----------------------------
+Afin de pouvoir dialoguer avec le système embarqué Arduino, il a fallu apprendre
+à effectuer une connexion série en Python. Nous avons donc décider le module
+python pyserial. La programmation est très simple malgré qu'il y ait eu un 
+accrochage. La classe principale de pyserial qui se nomme « Serial » a une
+méthode qui se nomme « open » mais il n'est pas toujours obligatoire de
+l'appeler pour ouvrir la connexion selon les arguments qui sont passés au 
+constructeur. Cela nous a fait perdre un peu de temps. Voici un exemple de
+code permettant d'ouvrir une connexion série, d'envoyer un message et de lire
+une réponse:
+
+{% highlight python %}
+import serial
+ser = serial.Serial('/dev/ttyUSB0', 9600)
+ser.write('Hello world\n')
+line = ser.readline()
+ser.close()
+{% endhighlight %}
+
+Protocole HTCPCP
+----------------
+Étant donné que le protocole HTCPCP spécifiait une nouvelle méthode HTTP et 
+une nouvelle en-tête HTTP, il était impossible de l'implémenter avec un serveur
+HTTP connu. Nous avons donc choisi SimpleHTTPServer qui est un module python
+qui permet comme le dit son nom d'avoir un serveur HTTP simple. Pour s'en servir,
+il suffisait d'hériter SimpleHTTPRequestHandler et d'implémenter le méthode 
+HTTP voulu en créant des méthode dont le nom commence par « do_ » suivit du
+nom de la méthode HTTP. Voici un exemple de code:
+
+{% highlight python %}
+import SimpleHTTPServer
+import SocketServer
+
+PORT = 8000
+
+class HTTPImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
+	def do_GET(self):
+		self.send_response(200)
+		self.end_headers()
+		self.wfile.write("Ceci est une requête GET")
+
+	def do_POST(self):
+		self.send_response(200)
+		self.end_headers()
+		self.wfile.write("Ceci est une requête POST")
+
+httpd = SocketServer.TCPServer(("localhost", PORT), HTTPImpl)
+
+print "Disponible sur le port ", PORT
+httpd.serve_forever()
+{% endhighlight %}
+
 Fonctionnement de relais
 ------------------------
 
@@ -107,7 +160,6 @@ V<sub>out</sub>.
 
 ![PullDown]({{ site.baseurl }}/img/Pulldown_Resistor.png)
 
-Protocole HTCPCP
-----------------
+Source: [http://en.wikipedia.org/wiki/Pull-up_resistor](http://en.wikipedia.org/wiki/Pull-up_resistor)
 
 
