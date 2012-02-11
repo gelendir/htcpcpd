@@ -9,15 +9,15 @@ Acquisition de connaissance
 
 Fonctionnement d'un Arduino
 ---------------------------
-L'arduino est un microcontrôleur dont les circuits sont libres et facilement
-reproduisable. Pour notre part, nous avons acheté un Arduino modèle Duemilanove.
-L'alimentation du Arduino se fait par la connexion USB et elle peut se faire
-par une source de 5 volt externe. 
+L'arduino est un microcontrôleur avec un circuit imprimé dont les spécifications
+utilisent une licence libre. Pour notre part, nous avons acheté un Arduino
+modèle Duemilanove. L'alimentation du Arduino se fait par la connexion USB 
+et elle peut se faire par une source de 5 volt externe. 
 
 La communication avec le microcontrôleur peut se faire par un port série que 
 la connexion USB émule. De plus, notre modèle contient 5 entrées analogiques qui
-nous permettent d'avoir une mesure de la tension arrivant à l'entrée. De plus,il 
-y a également 13 entréess digitales qui permettent d'avoir une valeur booléenne
+nous permettent d'avoir une mesure de la tension arrivant à l'entrée. Il y a 
+également 13 entrées digitales qui permettent d'avoir une valeur booléenne
 qui dit s'il y a du courant ou pas arrivant à l'entrée.
 
 ![ArduinoBoard]({{ site.baseurl }}/img/arduino.png)
@@ -27,7 +27,7 @@ qui est un langage dérivant lui-même du C et du C++. Plusieurs API sont
 disponibles et sont faciles d'utilisations. Voici un exemple de code qui 
 lit un valeur analogique et l'envoit au port série:
 
-{% highlight c %}
+{% highlight c++ %}
 void setup()
 {
   Serial.begin(9600); // Initialise la connexion série
@@ -47,11 +47,12 @@ Fonctionnement de relais
 Dans le cadre de notre recherche, nous avons eu à apprendre le fonctionnement
 d'un relais. Un relais est une composante électronique qui agit un peu comme
 un interrupteur c'est-à-dire que nous pouvons fermer ou ouvrir le circuit 
-avec un signal digital. 
+avec un signal digital afin d'alimenter une autre composante nécessiant plus
+de voltage.
 
 Comme on le voit ci-dessous, c'est le circuit nécessaire pour contrôler un relais
 avec un Arduino. Dans notre cas, la cafetière comprenait déjà le relais ainsi que
-le circuit nécessaire à le contrôler.
+le circuit nécessaire pour alimenter l'élément chauffant de la cafetière.
 
 ![ArduinoRelay]({{ site.baseurl }}/img/ArduinoRelay.png)
 Source: [http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1293881907](http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1293881907)
@@ -63,13 +64,48 @@ du relais et à la masse du relais. Voici un image de l'assemblage:
 
 ![CafetiereRelais]({{ site.baseurl }}/img/CafetiereRelais.png)
 
-Pull-down
----------
-
-
 Diviseur de tension
 -------------------
+Afin de trouver une astuce pour mesurer la quantité d'eau dans le récipient 
+de la cafetière, nous avons réfléchi à plusieurs solutions. Une d'entre-elle
+a été de faire un diviseur de tension. Un diviseur de tension est un circuit
+électronique permettant de mesurer la tension à l'endroit voulu dans le circuit
+c'est-à-dire que nous pouvons mesurer l'effet qu'une résistance a sur la tension
+du circuit.
 
+Comme on peut le voir dans le schéma ci-dessous qui représente un diviseur de
+tension, il faut relier l'entrée représentée ici par V<sub>out</sub> au résistance
+à mesurer et à une résistance reliée à la masse représentée par V<sub>in</sub>.
+
+![DiviseurTension]({{ site.baseurl }}/img/Voltage_divider.png)
+
+Source [http://it.wikipedia.org/wiki/File:Voltage_divider.svg](http://it.wikipedia.org/wiki/File:Voltage_divider.svg)
+
+Le but était donc d'envoyer du courant dans le fond de la cafetière et de mettre
+des résistances en série afin de savoir, selon la résistance mesurée, combien
+d'eau il y a dans la cafetière. Les tests que nous avions fait au préalable
+nous avait démontré que cette technique fonctionnait mais lorsque venu le temps
+d'implémenter la technique, nous nous sommes aperçus que la résistance de l'eau
+était trop grande pour être capable de voir un variation significative de tension
+selon la hauteur de l'eau.
+
+Pull-down
+---------
+Étant donné que la solution précédente était peu satisfaisante, nous avons
+trouvé une autre solution. La première idée que nous avions eu avait été de
+mettre des fils à différents emplacements dans l'eau et que lorsque l'eau
+atteindrais ces fils, ils recevraient le courant et nous pourrions savoir que
+l'eau est rendue à la hauteur du fil. Cependant, les entrées du Arduino
+recevaient beaucoup trop de courant résiduel pour avoir une bonne mesure.
+
+La denière idée que nous avons eu s'inspire de celle-ci. Il s'agit d'employer
+le principe d'une résistance « pull-down ». Ce principe part de l'idée que le
+courant se dirige toujours vers le chemin le plus facile. Donc, dans le circuit
+ci-dessous, lorsque le circuit est ouvert, tout le courant résiduel va dans la
+masse. Et lorsque le circuit est fermé, tout le courant va dans l'entrée 
+V<sub>out</sub>.
+
+![PullDown]({{ site.baseurl }}/img/Pulldown_Resistor.png)
 
 Protocole HTCPCP
 ----------------
