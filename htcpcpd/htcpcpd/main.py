@@ -49,7 +49,7 @@ import daemon
 def argparser():
 
 	parser = argparse.ArgumentParser(description='Load HTCPCPD Server')
-	parser.add_argument('-c', '--config', dest='configfile')
+	parser.add_argument('-c', '--config', dest='configfile', required=True)
 
 	return parser
 
