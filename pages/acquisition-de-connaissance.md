@@ -56,7 +56,12 @@ le circuit nécessaire à le contrôler.
 ![ArduinoRelay]({{ site.baseurl }}/img/ArduinoRelay.png)
 Source: [http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1293881907](http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1293881907)
 
+La difficulté a été de relier ce schéma à celui de notre cafetière. Finalement, 
+afin de fermer le circuit du relais de la cafetière, nous avons dû alimenter 
+la carte Arduino avec la prise DC du Arduino relié à l'alimentation 5V venant
+du relais et à la masse du relais. Voici un image de l'assemblage:
 
+![RelaisCafetiere]({{ site.baseurl }}/photo/ArduinoRelay.png)
 
 Pull-down
 ---------
