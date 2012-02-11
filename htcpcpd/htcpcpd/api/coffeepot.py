@@ -103,7 +103,7 @@ class CoffeePot:
 		This method send the message element in the dictionnary 
 		specified in parameter, receive a line from the serial 
 		port and compare it to the ['statuses']['good'] element
-		in the dictionnary. It return True if the if the lines
+		in the dictionnary. It return True if the lines
 		are same; otherwise False.
 		"""
 		
