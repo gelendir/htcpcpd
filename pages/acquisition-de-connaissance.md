@@ -61,7 +61,7 @@ afin de fermer le circuit du relais de la cafetière, nous avons dû alimenter
 la carte Arduino avec la prise DC du Arduino relié à l'alimentation 5V venant
 du relais et à la masse du relais. Voici un image de l'assemblage:
 
-![RelaisCafetiere]({{ site.baseurl }}/photo/ArduinoRelay.png)
+![CafetiereRelais]({{ site.baseurl }}/img/CafetiereRelais.png)
 
 Pull-down
 ---------
