@@ -1,0 +1,20 @@
+pkgname=htcpcpd
+pkgver=1.0
+pkgrel=1
+pkgdesc="An implementation of the \"Hyper-Text Coffee Pot Control Protocol\""
+arch=('any')
+url="http://gelendir.github.com/htcpcpd/"
+license=('GPL3')
+depends=('python2-distribute')
+source=("https://github.com/gelendir/htcpcpd/raw/master/htcpcpd.tar.bz2")
+md5sums=("a9f2a6e12da6ac0bc32124ef46c15815")
+
+build() {
+  cd ${srcdir}/htcpcpd
+
+  python2 setup.py install --root="$pkgdir" -O1 || return 1
+
+
+}
+
+# vim:set ts=2 sw=2 et:
