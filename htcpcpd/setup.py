@@ -21,10 +21,12 @@ An HTTP Server that implements the HTCPCP Protocol""",
       install_requires=[
           'python-daemon>=1.5.5',
           'pyserial',
+		  'pycurl'
       ],
       entry_points={
           'console_scripts': [
               'htcpcpd = htcpcpd.main:main',
+			  'htcpcp-client = htcpcpd.client.client:main'
           ]
         }
       )

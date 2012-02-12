@@ -114,24 +114,26 @@ class HTCPCPClient(Cmd):
 		c.perform()
 		return b.getvalue()
 
-#The default host and port
-host = 'localhost'
-port = 8000
 
-#Parsing the argument of the command line
-if len(sys.argv) in [2, 3]:
-	host = sys.argv[1]
+def main():
+	#The default host and port
+	host = 'localhost'
+	port = 8000
 
-	if len(sys.argv) == 3:
-		if sys.argv[2].isdigit():
-			port = int(sys.argv[2])
-		else:
-			print "usage: " + sys.argv[0] + " [host [port]]"
-			sys.exit(1)
+	#Parsing the argument of the command line
+	if len(sys.argv) in [2, 3]:
+		host = sys.argv[1]
+	
+		if len(sys.argv) == 3:
+			if sys.argv[2].isdigit():
+				port = int(sys.argv[2])
+			else:
+				print "usage: " + sys.argv[0] + " [host [port]]"
+				sys.exit(1)
 
+    #We start the command line
+	client = HTCPCPClient((host, port))
+	client.cmdloop()
 
 if __name__ == "__main__":
-    #We start the command line
-    client = HTCPCPClient((host, port))
-    client.cmdloop()
-
+	main()
