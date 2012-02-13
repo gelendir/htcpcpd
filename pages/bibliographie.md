@@ -32,3 +32,7 @@ Bibliographie
 [http://www.python.org/dev/peps/pep-3143/#example-usage](http://www.python.org/dev/peps/pep-3143/#example-usage)
 
 [http://pyserial.sourceforge.net/](http://pyserial.sourceforge.net/)
+
+[http://www.ladyada.net/learn/sensors/cds.html](http://www.ladyada.net/learn/sensors/cds.html)
+
+[http://en.wikipedia.org/wiki/Pull-up_resistor](http://en.wikipedia.org/wiki/Pull-up_resistor)
