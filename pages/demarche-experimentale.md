@@ -265,5 +265,105 @@ fonctions do_VERBE() de manière approprié. Voici un extrait de code :
 
 {% highlight python %}
 
+import SimpleHTTPServer
+import SocketServer
+
+PORT = 8000
+
+class HTTPImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
+
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write("Ceci est une requête GET")
+
+    def do_POST(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write("Ceci est une requête POST")
+
+    def do_BREW(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write("Ceci est une requête BREW")
+
+httpd = SocketServer.TCPServer(("localhost", PORT), HTTPImpl)
+
+print "Disponible sur le port ", PORT
+httpd.serve_forever()_
+
 {% endhighlight %}
 
+Cet expérimentation nous a permis d'apprendre les points suivants :
+
+ * Comment intercepter les requêtes web venant d'un navigateur
+ * Comment envoyer une réponse au navigateur
+
+Devis Technique des outils
+==========================
+
+Voici une liste non-exhaustive des outils que nous avons utilisés :
+
+Arduino IDE
+-----------
+
+Version utilisé : 1.0
+
+Environnement de programmation utilisé pour développer le code pour 
+l'arduino ainsi que de le téléverser sur la mémoire non-volatile.
+
+Carte Arduino
+-------------
+
+Modèle : Duemilanove (2009)
+
+Microcontrôleur à circuit imprimé qui peut être programmé avec L'IDE.
+Nous a permis de vérifier nos hypothèses et de tester les circuits que 
+nous avons monté.
+
+Python
+------
+
+Version utilisé : 2.7
+
+Langage de programmation dynamique interprété. Utilisé pour faire les
+tests de communication avec le port série et implémenter le serveur web.
+
+Le module SimpleHTTPServer est inclut par défaut avec le langage. Le module
+python-pyserial est disponible sur le site web suivant : http://pyserial.sourceforge.net
+
+Breadboard
+----------
+
+Dispositif qui permet de faire du prototypage rapide de circuits électroniques
+à l'aide de branchements avec des fils de cuivre.
+
+Capteur de lumière
+------------------
+
+Cellule photosensitive qui fait varier la résistance d'un circuit selon la 
+quantité de lumière qui est exposé sur la cellule.
+
+Autres composantes
+------------------
+
+ * Fils de cuivre de longeur variable
+ * Résistances (1K, 2K, 4.7K)
+ * Câble USB
+ * De l'eau
+
+Code source
+===========
+
+Voici le code source de tout les programmes que nous avons utilisés 
+pour chacune de nos expérimentations :
+
+ * [Programmation d'une DEL]({{ site.baseurl }}/examples/programmationDel.ino)
+ * [Communication par port série]({{ site.baseurl }}/examples/portSerie.ino)
+ * [Capteur de lumière]({{ site.baseurl }}/examples/capteurLumiere.ino)
+ * [Programmation d'un relais]({{ site.baseurl }}/examples/exempleRelais.ino)
+ * [Circuit utilisant de l'eau]({{ site.baseurl }}/examples/circuitEau.ino)
+ * [Circuit à diviseur de tension]({{ site.baseurl }}/examples/diviseurTension.ino)
+ * [Circuit pull-down]({{ site.baseurl }}/examples/pullDown.ino)
+ * [Port série python]({{ site.baseurl }}/examples/portSerie.py)
+ * [Requêtes HTCPCP]({{ site.baseurl }}/examples/serveurHTCPCP.py)
