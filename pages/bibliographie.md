@@ -36,3 +36,5 @@ Bibliographie
 [http://www.ladyada.net/learn/sensors/cds.html](http://www.ladyada.net/learn/sensors/cds.html)
 
 [http://en.wikipedia.org/wiki/Pull-up_resistor](http://en.wikipedia.org/wiki/Pull-up_resistor)
+
+[http://en.wikipedia.org/wiki/DC_connector](http://en.wikipedia.org/wiki/DC_connector)
