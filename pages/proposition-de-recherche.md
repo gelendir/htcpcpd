@@ -1,4 +1,4 @@
----
+﻿---
 title: Proposition de recherche
 layout: default
 category: page
@@ -14,7 +14,7 @@ Le but de cette recherche est de vérifier la faisabilité d’implémentation d
 
 Ce développement permettrait aux professeurs du département d’informatique du Cégep de Ste-Foy nécessitant du carburant le matin pour se réveiller d’automatiser la préparation du café le matin. Ainsi, apporter le bon café à la personne au bon moment.
 
-Ce projet peut permettre d’avertir les consommateurs de café lorsque le breuvage est prêt, évitant ainsi la perte de temps dû à l’attente et à la préparation du café. De plus, lorsqu’une cafetière est utilisée par plusieurs personnes, l’organisation de la préparation du café sera simplifiée.
+Ce projet peut permettre d’avertir les consommateurs de café lorsque le breuvage est prêt, évitant ainsi la perte de temps due à l’attente et à la préparation du café. De plus, lorsqu’une cafetière est utilisée par plusieurs personnes, l’organisation de la préparation du café sera simplifiée.
 
 Nous avons des connaissances du protocole HTTP ainsi que dans l’installation de serveurs web. De plus, nous avons des connaissances avec les langages de programmation les plus utilisés pour de la programmation embarquée (C/C++). 
 
@@ -47,7 +47,7 @@ La motivation pour cette recherche vient du besoin d’une implémentation libre
 
 La recherche sera menée à l’aide d’outils d’expérimentation, c’est-à-dire le développement de prototypes itératifs permettant de confirmer la faisabilité du projet. Le but de ces prototypes est d’approfondir nos connaissances du fonctionnement des systèmes embarqués. Une fois que les prototypes sont rendus à un niveau considéré comme satisfaisant, nous pourrons envisager une utilisation officielle du protocole sur internet.
 
-### 4.1 Apprentissage ###
+### 4.1 Apprentissages ###
 
 Un apprentissage de la programmation embarqué sur un système Arduino et de la programmation par port série seront nécessaires à la recherche. Également, une base d’électronique sera nécessaire à la mise en œuvre du projet et devra être apprise. 
 

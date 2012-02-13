@@ -1,58 +1,58 @@
----
+﻿---
 title: Démarche expérimentale
 layout: default
 category: page
 ---
 
-Démarche expérimentale sur L'arduino
+Démarche expérimentale sur l'Arduino
 ====================================
 
 Programmation d'un microcontrôleur
 ----------------------------------
 
-Notre démarche expérimentale a commencé en apprennant comment programmer
+Notre démarche expérimentale a commencé en apprenant comment programmer
 un microcontrôleur Arduino Duemilanove. Pour ce faire, nous avons
-utilisé l'IDE Arduino (à ne pas confondre avec le microntrôleur qui
-porte le même nom) fournit sur le site web du fabriquant.
+utilisé l'IDE Arduino (à ne pas confondre avec le microcontrôleur qui
+porte le même nom) fourni sur le site web du fabricant.
 
 ![ArduinoIde]({{ site.baseurl }}/img/arduinoIde.png)
 
 L'IDE permet
 de compiler du code C++ ainsi que de téléverser un programme sur la mémoire
-non-volatile du microcôntoleur. Cet expérience nous a permis d'apprendre
+non volatile du microcontrôleur. Cette expérience nous a permis d'apprendre
 les points suivants:
 
  * Un programme Arduino est composé de 2 fonctions : setup() et loop().
  * La fonction setup() permet d'initialiser des variables et de configurer.
  les composantes du microcontrôleur.
- * La fonction loop() boucle continuellement lors de l'éxécution d'un
+ * La fonction loop() boucle continuellement lors de l'exécution d'un
  programme, un peu de la même manière que "while(true) {}".
 
 Programmation d'une DEL
 -----------------------
 
-La 2e expérience fût d'implémenter le "hello world" des systèmes
+La 2e expérience fut d'implémenter le "hello world" des systèmes
 embarqués, c'est-à-dire coder un programme minimaliste permettant de
 faire une démonstration rapide des capacités d'un microcontrôleur.
 
 ![ArduinoDel]({{ site.baseurl }}/img/arduinoDel.png)
 
 Nous avons programmé l'Arduino pour allumer et éteindre une DEL en
-alterance à un intervale d'une seconde. Cet expérience nous a permis
+alternance à un intervalle d'une seconde. Cette expérience nous a permis
 d'appendre les points suivants :
 
  * Comment configurer un port pour émettre un signal (mode OUTPUT).
  * Comment allumer et éteindre un signal sur un port digital.
  * Comment utiliser la fonction delay() pour arrêter temporairement.
- l'éxécution d'un programme pendant un certain délai en millisecondes.
+ l'exécution d'un programme pendant un certain délai en millisecondes.
 
 Communication par port série
 ----------------------------
 
-L'arduino utilise un port série émulé à travers la connection USB pour
+L'Arduino utilise un port série émulé à travers la connexion USB pour
 communiquer avec l'ordinateur externe. À fin de mieux comprendre comment
-envoyer et recevoir des données à travers le port série, Nous avons écrit un programme
-qui renvoie une chaîne de charactères reçu. Voici un extrait du
+envoyer et recevoir des données à travers le port série, nous avons écrit un programme
+qui renvoie une chaîne de caractères reçus. Voici un extrait du
 programme : 
 
 {% highlight c++ %}
@@ -61,7 +61,7 @@ void setup() {
 
     //Ouvrir le port série et ajuster le "baud-rate"
     Serial.begin(9600);
-    //Avertir l'utilisateur que l'arduino est prêt à recevoir des strings
+    //Avertir l'utilisateur que l'Arduino est prêt à recevoir des strings
     Serial.println("Booted");
 }
 
@@ -74,18 +74,18 @@ void loop() {
 
         char in = Serial.read();
 
-        //Debug, vérification des charactères reçus
+        //Debug, vérification des caractères reçus
         Serial.print("Character is ");
         Serial.println(in);
 
         //Nous utilisons le retour de chariot pour indiquer
-        //la fin de la chaîne de charactères
+        //la fin de la chaîne de caractères
         if( in == '\n' ) {
             Serial.println(message);
             message = "";
         } else {
             //Vu que Serial.read() retourne seulement un
-            //charactère à la fois, nous avons besoin de les accumuler
+            //caractère à la fois, nous avons besoin de les accumuler
             message.concat( in );
         }
 
@@ -98,10 +98,10 @@ void loop() {
 Ce programme nous a permis d'apprendre les points suivants:
 
  * Le port série fonctionne un peu de la même manière qu'un descripteur de fichier
- * Il est juste possible de lire un charactère à la fois. Il faut donc emmagasiner 
-   les charactères temporairement avant de les utiliser.
- * Si Serial.begin() n'est pas appelé, l'arduino ne démarre pas le programme.
- * L'arduino n'emmagasine pas toujours tout les charactères reçus du premier coup. 
+ * Il est juste possible de lire un caractère à la fois. Il faut donc emmagasiner 
+   les caractères temporairement avant de les utiliser.
+ * Si Serial.begin() n'est pas appelé, l'Arduino ne démarre pas le programme.
+ * L'arduino n'emmagasine pas toujours tous les caractères reçus du premier coup. 
    Il faut donc attendre la réception du '\n' avant de traiter la chaîne au complet.
 
 Programmation d'un capteur de lumière
@@ -115,7 +115,7 @@ quantité de lumière exposé.
 ![ArduinoPhotocell]({{ site.baseurl }}/img/arduinoPhotocell.png)
 
 Dans le programme, le port analogique retourne une valeur entre 0 et
-1024 pour indiquer le niveau de résistance du circuit. Cet expérience
+1024 pour indiquer le niveau de résistance du circuit. Cette expérience
 nous a permis d'appendre les points suivants : 
 
  * Comment configurer un port pour lire un signal (mode INPUT).
@@ -128,7 +128,7 @@ Programmation d'un relais
 La cafetière utilise un relais pour partir et éteindre l'élément
 chauffant utilisé pour bouillir l'eau. À fin de mieux comprendre
 son utilisation, nous avons monté un circuit avec un relais que
-nous étions capable de contrôler avec l'arduino. Voici un schéma
+nous étions capables de contrôler avec l'Arduino. Voici un schéma
 du circuit :
 
 ![ArduinoRelaiSchema]({{ site.baseurl }}/img/arduinoRelaySchema.jpg)
@@ -147,12 +147,12 @@ Le circuit nous a permis d'apprendre les points suivants :
 Programmation d'un circuit utilisant de l'eau
 ---------------------------------------------
 
-Lors de notre recherche nous avons eu besoin de déterminer quels
-approches étaient le mieux adapté pour mesurer la quantité d'eau restant
-dans la cafetière. Une des approches que nous avons essayé consistait à
+Lors de notre recherche, nous avons eu besoin de déterminer quelles
+approches étaient le mieux adaptées pour mesurer la quantité d'eau restant
+dans la cafetière. Une des approches que nous avons essayées consistait à
 utiliser l'eau pour former un circuit électrique. Vu que l'eau est
 conducteur d'électricité, il serait envisageable de savoir à quel niveau
-l'eau était rendu en placant plusieurs circuits et en mesurant lesquels
+l'eau était rendue en plaçant plusieurs circuits et en mesurant lesquels
 conduisait de l'électricité.  Cette expérience nous a permis d'appendre
 les points suivants :
 
@@ -160,23 +160,23 @@ les points suivants :
  * Désavantage : Il faudrait un port digital pour chaque circuit
  installé dans l'eau
  * Découverte : même après avoir retiré l'eau il reste encore de
- l'éléctricité résiduel dans le circuit, ce qui peut fausser les
+ l'électricité résiduelle dans le circuit, ce qui peut fausser les
  résultats de lecture
 
 Programmation d'un circuit à diviseur de tension
 ------------------------------------------------
 
-La 2e approche retenu pour mesurer la quantité d'eau était d'utiliser un
+La 2e approche retenue pour mesurer la quantité d'eau était d'utiliser un
 circuit à diviseur de tension. Voici une image du circuit que nous avons
-utilisé pour comprendre le concept :
+utilisée pour comprendre le concept :
 
 ![ArduinoVoltageDivider]({{ site.baseurl }}/img/arduinoVoltageDivider.png)
 
 L'hypothèse était qu'en utilisant un
 circuit en série, plus le niveau d'eau augmente et plus la résistance du
-circuit serait élévé. De cette manière, il serait possible de mesurer la
+circuit serait élevée. De cette manière, il serait possible de mesurer la
 quantité d'eau avec un port analogique et en mesurant le niveau de résistance
-pour des quantités d'eau pré-déterminés.
+pour des quantités d'eau prédéterminées.
 
 Cette expérience nous a permis d'apprendre les points suivants :
 
@@ -188,18 +188,18 @@ Cette expérience nous a permis d'apprendre les points suivants :
 Programmation d'un circuit avec "pull-down"
 -------------------------------------------
 
-La découverte d'electricité résiduel dans certains circuits était un
+La découverte d'électricité résiduelle dans certains circuits était un
 facteur important qui faussait plusieurs de nos résultats de lecture.
 Nous avons donc cherché un moyen d'éliminer ce problème. La solution
-retenu fût d'utiliser un circuit de type "pull-down". Voici une image du
-circuit que nous avons utilisé pour faire nos expérimentations :
+retenue fut d'utiliser un circuit de type "pull-down". Voici une image du
+circuit que nous avons utilisée pour faire nos expérimentations :
 
 ![ArduinoPullDown]({{ site.baseurl }}/img/arduinoPullDown.png)
 
 Ce circuit nous a permis d'avoir des résultats beaucoup plus précis
 lorsque nous avons implémenté les divers circuits de la cafetière. 
 
-Cette expéience nous a permis d'apprendre les points suivants : 
+Cette expérience nous a permis d'apprendre les points suivants : 
 
  * L'électricité "évacue" par le circuit pull-down lorsque le circuit
  principal est déconnecté
@@ -214,16 +214,16 @@ Démarche expérimentale sur le serveur web
 Réception de données sur un port série
 --------------------------------------
 
-Le moyen de communication principale de l'arduino est à travers un port
+Le moyen de communication principale de l'Arduino est à travers un port
 série. Nous avons donc eu besoin de trouver un moyen d'envoyer et de
-trasnmettre des données dans le langage de programmation python étant
+transmettre des données dans le langage de programmation python étant
 donnée que le serveur web serait codé dans ce langage.
 Après quelques recherches, nous
 avons décidé d'utiliser le module python-pyserial pour contrôler un port
 série. Pour mieux comprendre le fonctionnement de ce module, nous avons
-implémenter un petit programme similaire à celui de l'arduino (Voir la
+implémenté un petit programme similaire à celui de l'Arduino (Voir la
 section [Communication par port série](#communication_par_port_srie)),
-c'est-à-dire un programme qui envoie une chaîne de charactères et
+c'est-à-dire un programme qui envoie une chaîne de caractères et
 affiche à l'écran le résultat reçu. Voici un extrait de code :
 
 {% highlight python %}
@@ -233,10 +233,10 @@ import serial
 #Ouvrir le port série de l'arduino
 ser = serial.Serial('/dev/ttyUSB0')  
 
-#Nous envoyons une chaîne de charactère à l'arduino
+#Nous envoyons une chaîne de caractère à l'arduino
 ser.write("hello world")
 
-#L'arduino est supposé nous renvoyer la même chaîne de charactère
+#L'arduino est censé nous renvoyer la même chaîne de caractère
 print ser.readline()
 
 #Fermeture du port
@@ -247,21 +247,21 @@ ser.close()
 Ce programme nous a permis d'apprendre les points suivants :
 
  * Comment utiliser un port série en python
- * L'envoie et la réception de données agit de la même manière qu'un
+ * L'envoi et la réception de données agissent de la même manière qu'un
  descripteur de fichier (les fonctions read and write)
- * Un seul programme peut accèder au port série à la fois
+ * Un seul programme peut accéder au port série à la fois
 
 Réception de requêtes BREW, GET, POST
 -------------------------------------
 
 Les spécifications du protocole HTCPCP ajoutent des verbes
-d'actions pour contrôler la cafetière qui ne sont pas reconnus par les
-serveurs HTTP traditionels. Nous avons donc eu besoin de trouver un
+d'action pour contrôler la cafetière qui ne sont pas reconnus par les
+serveurs HTTP traditionnels. Nous avons donc eu besoin de trouver un
 moyen d'ajouter une implémentation pour ces nouveaux verbes tout en
 restant compatible avec HTTP. Après quelques recherches, nous avons
-découvert que le module SimpleHTTPServer de python permet de redéfénir
-les verbes d'actions de manière arbitraire en redéfinissant les
-fonctions do_VERBE() de manière approprié. Voici un extrait de code :
+découvert que le module SimpleHTTPServer de python permet de redéfinir
+les verbes d'action de manière arbitraire en redéfinissant les
+fonctions do_VERBE() de manière appropriée. Voici un extrait de code :
 
 {% highlight python %}
 
@@ -294,23 +294,23 @@ httpd.serve_forever()_
 
 {% endhighlight %}
 
-Cet expérimentation nous a permis d'apprendre les points suivants :
+Cette expérimentation nous a permis d'apprendre les points suivants :
 
  * Comment intercepter les requêtes web venant d'un navigateur
  * Comment envoyer une réponse au navigateur
 
-Devis Technique des outils
+Devis technique des outils
 ==========================
 
-Voici une liste non-exhaustive des outils que nous avons utilisés :
+Voici une liste non exhaustive des outils que nous avons utilisés :
 
 Arduino IDE
 -----------
 
-Version utilisé : 1.0
+Version utilisée : 1.0
 
 Environnement de programmation utilisé pour développer le code pour 
-l'arduino ainsi que de le téléverser sur la mémoire non-volatile.
+l'arduino ainsi que de le téléverser sur la mémoire non volatile.
 
 Carte Arduino
 -------------
@@ -319,17 +319,17 @@ Modèle : Duemilanove (2009)
 
 Microcontrôleur à circuit imprimé qui peut être programmé avec L'IDE.
 Nous a permis de vérifier nos hypothèses et de tester les circuits que 
-nous avons monté.
+nous avons montés.
 
 Python
 ------
 
-Version utilisé : 2.7
+Version utilisée : 2.7
 
 Langage de programmation dynamique interprété. Utilisé pour faire les
 tests de communication avec le port série et implémenter le serveur web.
 
-Le module SimpleHTTPServer est inclut par défaut avec le langage. Le module
+Le module SimpleHTTPServer est inclus par défaut avec le langage. Le module
 python-pyserial est disponible sur le site web suivant : http://pyserial.sourceforge.net
 
 Breadboard
@@ -342,12 +342,12 @@ Capteur de lumière
 ------------------
 
 Cellule photosensitive qui fait varier la résistance d'un circuit selon la 
-quantité de lumière qui est exposé sur la cellule.
+quantité de lumière qui est exposée sur la cellule.
 
 Autres composantes
 ------------------
 
- * Fils de cuivre de longeur variable
+ * Fils de cuivre de longueur variable
  * Résistances (1K, 2K, 4.7K)
  * Câble USB
  * De l'eau
@@ -355,7 +355,7 @@ Autres composantes
 Code source
 ===========
 
-Voici le code source de tout les programmes que nous avons utilisés 
+Voici le code source de tous les programmes que nous avons utilisés 
 pour chacune de nos expérimentations :
 
  * [Programmation d'une DEL]({{ site.baseurl }}/examples/programmationDel.ino)
