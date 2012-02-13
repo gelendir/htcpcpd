@@ -53,6 +53,10 @@ header.head p {
     margin-bottom: 1em;
 }
 
+code {
+    border: none;
+}
+
 table {
   border: 1px solid #ddd;
   border-collapse: separate;
