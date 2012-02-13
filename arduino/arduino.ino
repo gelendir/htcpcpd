@@ -172,6 +172,13 @@ void loop() {
 
 }
 
+/**
+ * This method read a command from the serial port and
+ * return the line without the new line character. Each
+ * command end by the new line character.
+ * @return Return the received command without the new 
+ * line character.
+ */
 String readCommand() {
 
     String command = "";
@@ -195,6 +202,14 @@ String readCommand() {
     return command;
 }
 
+/**
+ * This method verify if the line received from the serial
+ * port fit with the command passed in parameter.
+ * @param[in] input The command received from the serial port
+ * @param[in] command The command for comparison
+ * @return Return true if the two parameters a equals; false 
+ * otherwise.
+ */
 boolean isCommand( String input, const char* command ) {
 
     byte pos = 0;
@@ -214,6 +229,10 @@ boolean isCommand( String input, const char* command ) {
 
 }
 
+/**
+ * This method verify if the pot is present.
+ * @return Return true if the pot is present; false otherwise.
+ */
 boolean isPotPresent() {
 
     boolean state = digitalRead( PIN_POT );
@@ -221,6 +240,12 @@ boolean isPotPresent() {
 
 }
 
+/**
+ * This method return the number of litres there is in the
+ * recipient of the coffee pot.
+ * @return Return the number of litres there is in the
+ * recipient of the coffee pot.
+ */
 int nbWaterLiters() {
 
     int liters = 0;
@@ -240,6 +265,12 @@ int nbWaterLiters() {
 
 }
 
+/**
+ * This method send the response in the serial port.
+ * @param[in] response The response to send
+ * @param[in] arg A number to print in the response. The presence
+ * of this number in the response is set by % in the response.
+*/
 void sendResponse( struct Response response, int arg = 0 ) {
 
     const char* message = response.message;
@@ -264,6 +295,10 @@ void sendResponse( struct Response response, int arg = 0 ) {
 
 }
 
+/**
+ * This method send to the serial port the response
+ * of the command to know if the pot is present or not.
+ */
 void processPotPresence() {
 
     if( isPotPresent() ) {
@@ -274,6 +309,10 @@ void processPotPresence() {
 
 }
 
+/**
+ * This method send to the serial port the response
+ * of the command to know the quantity of the water.
+ */
 void processWaterQuantity() {
 
     int liters = nbWaterLiters();
@@ -285,6 +324,10 @@ void processWaterQuantity() {
 
 }
 
+/**
+ * This method send to the serial port the response
+ * of the command to know the brewing state.
+ */
 void processBrewingState() {
 
     if( boilerOn ) {
@@ -295,6 +338,11 @@ void processBrewingState() {
 
 }
 
+/**
+ * This method check if the number of litre in the recipient
+ * is zero or if the heating time exceeds a certain time. If yes,
+ * The boiler is stopped.
+ */
 void checkBoilerTimer() {
 
     if( boilerOn ) {
@@ -313,6 +361,9 @@ void checkBoilerTimer() {
 
 }
 
+/**
+ * This method start the boiler of the coffee pot.
+ */
 void startBoiler() {
 
     digitalWrite( PIN_BOILER, HIGH );
@@ -321,6 +372,9 @@ void startBoiler() {
 
 }
 
+/**
+ * This method stop the boiler of the coffee pot.
+ */
 void stopBoiler() {
 
     digitalWrite( PIN_BOILER, LOW );
@@ -329,6 +383,10 @@ void stopBoiler() {
 
 }
 
+/**
+ * This method send to the serial port the response
+ * of the command to start the boiler.
+ */
 void processStartBrewing() {
 
     if( boilerOn ) {
@@ -342,6 +400,10 @@ void processStartBrewing() {
 
 }
 
+/**
+ * This method send to the serial port the response
+ * of the command to stop the boiler.
+ */
 void processStopBrewing() {
 
     if( !boilerOn ) {
