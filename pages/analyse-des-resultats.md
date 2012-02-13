@@ -1,4 +1,4 @@
-﻿---
+---
 title: Analyse des résultats
 layout: default
 category: page

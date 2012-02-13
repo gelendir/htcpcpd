@@ -1,4 +1,4 @@
-﻿---
+---
 title: Difficultés rencontrée
 layout: default
 category: page

@@ -1,4 +1,4 @@
-﻿---
+---
 title: Démarche expérimentale
 layout: default
 category: page

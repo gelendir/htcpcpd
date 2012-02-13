@@ -1,4 +1,4 @@
-﻿---
+---
 title: Conclusion 
 layout: default
 category: page

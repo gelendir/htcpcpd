@@ -1,4 +1,4 @@
-﻿---
+---
 title: Proposition de recherche
 layout: default
 category: page

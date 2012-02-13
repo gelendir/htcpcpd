@@ -1,4 +1,4 @@
-﻿---
+---
 title: Acquisition de connaissance
 layout: default
 category: page
