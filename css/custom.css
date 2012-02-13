@@ -1,5 +1,6 @@
 body {
     padding-top: 60px;
+    background-image: url(../img/background.png)
 }
 
 .fluid-container {
@@ -22,6 +23,11 @@ header.head p {
     font-size: 25px;
     margin-bottom: 8px;
     line-height: 1;
+}
+
+.post {
+    background-color: white;
+    /* background-color: #F5F9FF; */
 }
 
 .post h1 {
@@ -47,3 +53,76 @@ header.head p {
     margin-bottom: 1em;
 }
 
+table {
+  border: 1px solid #ddd;
+  border-collapse: separate;
+  *border-collapse: collapsed;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+table th + th,
+table td + td,
+table th + td,
+table td + th {
+  border-left: 1px solid #ddd;
+}
+table thead:first-child tr:first-child th,
+table tbody:first-child tr:first-child th,
+table tbody:first-child tr:first-child td {
+  border-top: 0;
+}
+table thead:first-child tr:first-child th:first-child,
+table tbody:first-child tr:first-child td:first-child {
+  -webkit-border-radius: 4px 0 0 0;
+  -moz-border-radius: 4px 0 0 0;
+  border-radius: 4px 0 0 0;
+}
+table thead:first-child tr:first-child th:last-child,
+table tbody:first-child tr:first-child td:last-child {
+  -webkit-border-radius: 0 4px 0 0;
+  -moz-border-radius: 0 4px 0 0;
+  border-radius: 0 4px 0 0;
+}
+table thead:last-child tr:last-child th:first-child,
+table tbody:last-child tr:last-child td:first-child {
+  -webkit-border-radius: 0 0 0 4px;
+  -moz-border-radius: 0 0 0 4px;
+  border-radius: 0 0 0 4px;
+}
+table thead:last-child tr:last-child th:last-child,
+table tbody:last-child tr:last-child td:last-child {
+  -webkit-border-radius: 0 0 4px 0;
+  -moz-border-radius: 0 0 4px 0;
+  border-radius: 0 0 4px 0;
+}
+table tbody tr:nth-child(odd) td,
+table tbody tr:nth-child(odd) th {
+  background-color: #f9f9f9;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 18px;
+}
+table th,
+table td {
+  padding: 8px;
+  line-height: 18px;
+  text-align: left;
+  border-top: 1px solid #ddd;
+}
+table th {
+  font-weight: bold;
+  vertical-align: bottom;
+}
+table td {
+  vertical-align: top;
+}
+table thead:first-child tr th,
+table thead:first-child tr td {
+  border-top: 0;
+}
+table tbody + tbody {
+  border-top: 2px solid #ddd;
+}

@@ -2,10 +2,10 @@
 <html>
 <head>
     <meta charset="utf8">
-    <title>{{ page.title  }}</title>
+    <title>{{ page.title }}</title>
 
     <link rel="stylesheet" href="{{ site.baseurl }}/css/bootstrap.css" type="text/css" />
-    <link rel="stylesheet" href="{{ site.baseurl }}/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/pastie.css" type="text/css" />
     <link rel="stylesheet" href="{{ site.baseurl }}/css/custom.css" type="text/css" />
 </head>
 <body>
@@ -49,14 +49,24 @@
                 <li class="nav-header">
                     Pages
                 </li>
-                {% for page in site.pages %}
-                    {% if page.category == "page" %}
-                        <li>
-                            <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-
+                <li>
+                    <a href="{{ site.baseurl }}/pages/proposition-de-recherche.html">Proposition de recherche</a>
+                </li>
+                <li>
+                    <a href="{{ site.baseurl }}/pages/acquisition-de-connaissance.html">Acquisition des connaissances</a>
+                </li>
+                <li>
+                    <a href="{{ site.baseurl }}/pages/demarche-experimentale.html">Démarche expérimentale</a>
+                </li>
+                <li>
+                    <a href="{{ site.baseurl }}/pages/difficultes-rencontrees.html">Difficultés rencontrées</a>
+                </li>
+                <li>
+                    <a href="{{ site.baseurl }}/pages/analyse-des-resultats.html">Analyse des résultats</a>
+                </li>
+                <li>
+                    <a href="{{ site.baseurl }}/pages/bibliographie.html">Bibliographie</a>
+                </li>
             </ul>
         </section>
 
