@@ -9,7 +9,7 @@ depends=('python2-distribute')
 source=("http://gelendir.github.com/htcpcpd/htcpcpd.tar.bz2",
         "htcpcpd",
         "htcpcpd.ini")
-md5sums=("a9f2a6e12da6ac0bc32124ef46c15815",
+md5sums=("698555955d92b0f86cd05dc61b91301b"
          "8835a5a694b1bec9b10270970336f0c4",
          "3aac4663cbe0f68b69c4efc9bdf35bdd")
 
