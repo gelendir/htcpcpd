@@ -1,4 +1,4 @@
----
+﻿---
 title: Analyse des résultats
 layout: default
 category: page
@@ -12,12 +12,12 @@ Voici une liste de nos objectifs avec le résultat pour chacun
 
  **Mettre en marche la cafetière lors de la réception d’une commande (sur demande)**
 
- Nous avons réussi à mettre en marche la cafetière lors de la récption
+ Nous avons réussi à mettre en marche la cafetière lors de la réception
  d'une requête web
 
  **Chauffer l’eau de la cafetière**
 
-  Nous avons réussi à activer la bouilloire de la cafetière lorsque
+  Nous avons réussi à activer la bouilloire de la cafetière, lorsque
   nécessaire à la préparation du café
 
  **Détecter la présence d’eau dans la cafetière, avant de la
@@ -34,7 +34,7 @@ Voici une liste de nos objectifs avec le résultat pour chacun
 
  Nous avons réussi à mesurer la quantité d'eau grâce à un système de
  capteurs pour mesurer le niveau d'eau restant dans la cafetière. Le
- système de capteurs reste néanmoins imprécis car il est seulement
+ système de capteurs reste néanmoins imprécis, car il est seulement
  capable de mesurer certaines quantités pré-établis, par exemple : 4
  tasses, 8 tasses, 12 tasses
 
@@ -42,7 +42,7 @@ Voici une liste de nos objectifs avec le résultat pour chacun
 
  Cet objectif c'est avéré non-pertinent. Nous avons émis l'hypothèse
  qu'il serait nécessaire de détecter la température d'eau avant
- d'infuser le café, mais ce processus est déja prévu dans l'assemblage
+ d'infuser le café, mais ce processus est déjà prévu dans l'assemblage
  physique de la cafetière.
 
  **Procéder à l’infusion du café**
@@ -50,14 +50,14 @@ Voici une liste de nos objectifs avec le résultat pour chacun
  L'objectif est atteint grâce à la disposition physique du circuit en
  charge de chauffer l'eau. Une fois l'eau chaude, l'effet de
  condensation amène automatiquement l'eau vers le haut de la cafetière
- à travers un tuyeau menant au compartiment d'infusion du café.
+ à travers un tuyau menant au compartiment d'infusion du café.
 
  **Notifier l’utilisateur lorsque le café est prêt**
 
- Nous n'avons pas eu le temps d'atteindre cet objectif. Lors d'une futur
+ Nous n'avons pas eu le temps d'atteindre cet objectif. Lors d'une future
  phase de développement du projet, il serait intéressant d'avertir
  l'utilisateur que le café est prêt au moyen d'un courriel, ou encore
- l'envoie d'un message par messagerie instantané.
+ l'envoie d'un message par messagerie instantanée.
 
 
  **Notifier l’utilisateur des étapes nécessaires pour préparer le
