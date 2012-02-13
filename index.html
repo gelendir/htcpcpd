@@ -34,9 +34,56 @@ Pour comprendre le fonctionnement du projet, veuillez lire les pages situés dan
 
 <h2>Prérequis et Installation</h2>
 
+<p>
 Pour utiliser HTCPCPD vous-même, veuillez vous référer au fichier README disponible avec le code source du projet
+</p>
 
 <h2>Utilisation</h2>
+
+<h3>Serveur</h3>
+
+<ul>
+    <li>Branchez la carte arduino de relié à la cafetière sur un port USB du serveur</li>
+    <li>Modifiez la configuration du fichier htcpcpd.ini selon vos besoins</li>
+    <li>Partez le serveur avec la commande suivante:</li>
+</ul>
+
+{% highlight bash %}
+htcpcpd -c htcpcpd.ini
+{% endhighlight %}
+
+<h3>Client</h3>
+
+<p>
+Étant donnée que les naviagateurs web modernes ne supportent pas encore le protocole HTCPCP, nous avons
+implémenté un client en ligne de console que vous pouvez partir avec la commande suivante :
+</p>
+
+{% highlight bash %}
+htcpcpd-client localhost 8000
+{% endhighlight %}
+
+<p>
+Changez la valeur de localhost et 8000 par l'adresse et le port approprié si vous avez modifié la configuration par défaut du serveur.
+</p>
+
+<p>Une fois dans le client console, vous pouvez tapper la command 'help' pour avoir une liste des commandes disponibles</p>
+
+<pre>
+CoffeePot> help
+
+Documented commands (type help <topic>):
+========================================
+EOF  brew  exit  pot  quit  resume  status  stop  water
+</pre>
+
+<p>Pour avoir de l'information sur une commande, tappez 'help' suivi du nom de la commande.
+
+<pre>
+CoffeePot> help pot
+ 
+Show if the pot is in the machine       or not.
+</pre>
 
 <h2>Code source</h2>
 
