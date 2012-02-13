@@ -147,11 +147,66 @@ Le circuit nous a permis d'apprendre les points suivants :
 Programmation d'un circuit utilisant de l'eau
 ---------------------------------------------
 
-Programmation d'un circuit avec "pull-down"
--------------------------------------------
+Lors de notre recherche nous avons eu besoin de déterminer quels
+approches étaient le mieux adapté pour mesurer la quantité d'eau restant
+dans la cafetière. Une des approches que nous avons essayé consistait à
+utiliser l'eau pour former un circuit électrique. Vu que l'eau est
+conducteur d'électricité, il serait envisageable de savoir à quel niveau
+l'eau était rendu en placant plusieurs circuits et en mesurant lesquels
+conduisait de l'électricité.  Cette expérience nous a permis d'appendre
+les points suivants :
+
+ * Cette approche pour mesurer l'eau est une solution envisageable
+ * Désavantage : Il faudrait un port digital pour chaque circuit
+ installé dans l'eau
+ * Découverte : même après avoir retiré l'eau il reste encore de
+ l'éléctricité résiduel dans le circuit, ce qui peut fausser les
+ résultats de lecture
 
 Programmation d'un circuit à diviseur de tension
 ------------------------------------------------
+
+La 2e approche retenu pour mesurer la quantité d'eau était d'utiliser un
+circuit à diviseur de tension. Voici une image du circuit que nous avons
+utilisé pour comprendre le concept :
+
+![ArduinoVoltageDivider]({{ site.baseurl }}/img/arduinoVoltageDivider.png)
+
+L'hypothèse était qu'en utilisant un
+circuit en série, plus le niveau d'eau augmente et plus la résistance du
+circuit serait élévé. De cette manière, il serait possible de mesurer la
+quantité d'eau avec un port analogique et en mesurant le niveau de résistance
+pour des quantités d'eau pré-déterminés.
+
+Cette expérience nous a permis d'apprendre les points suivants :
+
+ * L'eau a une plus grande résistance que des fils de cuivre
+ * La résistance de l'eau varie légèrement selon sa température
+ * Après environ 8 tasses d'eau, la variation de résistance est beaucoup
+ plus petite
+
+Programmation d'un circuit avec "pull-down"
+-------------------------------------------
+
+La découverte d'electricité résiduel dans certains circuits était un
+facteur important qui faussait plusieurs de nos résultats de lecture.
+Nous avons donc cherché un moyen d'éliminer ce problème. La solution
+retenu fût d'utiliser un circuit de type "pull-down". Voici une image du
+circuit que nous avons utilisé pour faire nos expérimentations :
+
+![ArduinoPullDown]({{ site.baseurl }}/img/arduinoPullDown.png)
+
+Ce circuit nous a permis d'avoir des résultats beaucoup plus précis
+lorsque nous avons implémenté les divers circuits de la cafetière. 
+
+Cette expéience nous a permis d'apprendre les points suivants : 
+
+ * L'électricité "évacue" par le circuit pull-down lorsque le circuit
+ principal est déconnecté
+ * Un pull-down est souvent nécessaire pour éviter de capter
+ l'électricité dans l'air ambiant et fausser les résultats, aussi connu
+ sous le nom de "bruit statique"
+
 
 Démarche expérimentale sur le serveur web
 =========================================
@@ -159,6 +214,56 @@ Démarche expérimentale sur le serveur web
 Réception de données sur un port série
 --------------------------------------
 
-Réception de requêtes GET, POST
--------------------------------
+Le moyen de communication principale de l'arduino est à travers un port
+série. Nous avons donc eu besoin de trouver un moyen d'envoyer et de
+trasnmettre des données dans le langage de programmation python étant
+donnée que le serveur web serait codé dans ce langage.
+Après quelques recherches, nous
+avons décidé d'utiliser le module python-pyserial pour contrôler un port
+série. Pour mieux comprendre le fonctionnement de ce module, nous avons
+implémenter un petit programme similaire à celui de l'arduino (Voir la
+section [Communication par port série](#communication_par_port_srie)),
+c'est-à-dire un programme qui envoie une chaîne de charactères et
+affiche à l'écran le résultat reçu. Voici un extrait de code :
+
+{% highlight python %}
+
+import serial
+
+#Ouvrir le port série de l'arduino
+ser = serial.Serial('/dev/ttyUSB0')  
+
+#Nous envoyons une chaîne de charactère à l'arduino
+ser.write("hello world")
+
+#L'arduino est supposé nous renvoyer la même chaîne de charactère
+print ser.readline()
+
+#Fermeture du port
+ser.close()
+
+{% endhighlight %}
+
+Ce programme nous a permis d'apprendre les points suivants :
+
+ * Comment utiliser un port série en python
+ * L'envoie et la réception de données agit de la même manière qu'un
+ descripteur de fichier (les fonctions read and write)
+ * Un seul programme peut accèder au port série à la fois
+
+Réception de requêtes BREW, GET, POST
+-------------------------------------
+
+Les spécifications du protocole HTCPCP ajoutent des verbes
+d'actions pour contrôler la cafetière qui ne sont pas reconnus par les
+serveurs HTTP traditionels. Nous avons donc eu besoin de trouver un
+moyen d'ajouter une implémentation pour ces nouveaux verbes tout en
+restant compatible avec HTTP. Après quelques recherches, nous avons
+découvert que le module SimpleHTTPServer de python permet de redéfénir
+les verbes d'actions de manière arbitraire en redéfinissant les
+fonctions do_VERBE() de manière approprié. Voici un extrait de code :
+
+{% highlight python %}
+
+{% endhighlight %}
 
