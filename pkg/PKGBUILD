@@ -18,11 +18,9 @@ build() {
 
   python2 setup.py install --root="${pkgdir}"  || return 1
 
-  mkdir -p ${pkgdir}/var/run/
-  mkdir -p ${pkgdir}/var/log/
   mkdir -p ${pkgdir}/etc/rc.d/
-  cp ${startdir}/htcpcp ${pkgdir}/etc/rc.d/
-  cp ${startdir}/htcpcp.ini ${pkgdir}/etc/
+  cp ${startdir}/htcpcpd ${pkgdir}/etc/rc.d/
+  cp ${startdir}/htcpcpd.ini ${pkgdir}/etc/
 }
 
 # vim: set ts=2 sw=2 sts=2 et:
