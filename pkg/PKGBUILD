@@ -9,7 +9,7 @@ depends=('python2-distribute' 'python-pycurl' 'python-daemon' 'python-pyserial')
 source=("${url}/${pkgname}.tar.bz2"
         "htcpcpd")
 md5sums=("d18cfe41957438b394a1c93ae7fe917f"
-         "8835a5a694b1bec9b10270970336f0c4")
+         "79de9a6754bba4053cdca323e2d15862")
 
 build() {
   cd ${srcdir}/htcpcpd/htcpcpd
