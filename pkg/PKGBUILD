@@ -6,11 +6,11 @@ arch=('any')
 url="http://gelendir.github.com/htcpcpd/"
 license=('GPL3')
 depends=('python2-distribute')
-source=("http://gelendir.github.com/htcpcpd/htcpcpd.tar.bz2",
-        "htcpcpd",
+source=("${url}/${pkgname}.tar.bz2"
+        "htcpcpd"
         "htcpcpd.ini")
 md5sums=("458ea829d7212c91f9b7a9e8cb4b4880"
-         "8835a5a694b1bec9b10270970336f0c4",
+         "8835a5a694b1bec9b10270970336f0c4"
          "3aac4663cbe0f68b69c4efc9bdf35bdd")
 
 build() {
