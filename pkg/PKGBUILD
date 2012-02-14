@@ -5,7 +5,7 @@ pkgdesc="An implementation of the \"Hyper-Text Coffee Pot Control Protocol\""
 arch=('any')
 url="http://gelendir.github.com/htcpcpd"
 license=('GPL3')
-depends=('python2-distribute')
+depends=('python2-distribute' 'python-pycurl' 'python-daemon' 'python-pyserial')
 source=("${url}/${pkgname}.tar.bz2"
         "htcpcpd"
         "htcpcpd.ini")
