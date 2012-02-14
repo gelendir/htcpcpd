@@ -13,10 +13,10 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <p class="brand">HTCPCPD</p>
+            <p class="brand"><a href="{{ site.baseurl | append: '/index.html' }}">HTCPCPD</a></p>
             <ul class="nav">
                 <li>
-                    <a href="{{ site.baseurl }}">Accueil</a>
+                    <a href="{{ site.baseurl | append: '/index.html' }}">Accueil</a>
                 </li>
                 <li>
                     <a href="{{ site.baseurl | append: '/posts.html' }}">Billets</a>
@@ -31,19 +31,6 @@
     <div class="fluid-container sidebar-left">
 
         <section class="fluid-sidebar">
-            <ul class="nav list well">
-
-                <li class="nav-header">
-                    Billets
-                </li>
-                {% for post in site.posts %}
-                    <li>
-                        <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-                    </li>
-                {% endfor %}
-
-            </ul>
-
             <ul class="nav list well">
 
                 <li class="nav-header">
@@ -65,12 +52,26 @@
                     <a href="{{ site.baseurl }}/pages/analyse-des-resultats.html">Analyse des résultats</a>
                 </li>
                 <li>
-                    <a href="{{ site.baseurl }}/pages/bibliographie.html">Bibliographie</a>
-                </li>
-                <li>
                     <a href="{{ site.baseurl }}/pages/conclusion.html">Conclusion</a>
                 </li>
+                <li>
+                    <a href="{{ site.baseurl }}/pages/bibliographie.html">Bibliographie</a>
+                </li>
             </ul>
+
+            <ul class="nav list well">
+
+                <li class="nav-header">
+                    Billets
+                </li>
+                {% for post in site.posts %}
+                    <li>
+                        <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+                    </li>
+                {% endfor %}
+
+            </ul>
+
         </section>
 
         <section class="fluid-content well post">
