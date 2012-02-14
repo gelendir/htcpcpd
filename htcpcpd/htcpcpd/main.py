@@ -63,8 +63,8 @@ def main():
 	config = ConfigParser.RawConfigParser()
 	config.read(CONFIG_PATH)
 
-	LOG_PATH = config.get('htcpcpd', 'pidfile')
-	PID_FILE = config.get('htcpcpd', 'logfile')
+	LOG_PATH = config.get('htcpcpd', 'logfile')
+	PID_FILE = config.get('htcpcpd', 'pidfile')
 
 	SERIAL_DEVICE = config.get('htcpcpd', 'device')
 	PORT = config.getint('htcpcpd', 'port') 
