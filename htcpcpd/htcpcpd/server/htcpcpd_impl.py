@@ -1,7 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This file contains the HTCPCPDImpl class.
+This file contains the HTCPCPDImpl class, used
+to recieve and interpret HTCPCP requests.
 Author: Frédérik Paradis
 """
 
@@ -14,7 +15,7 @@ from htcpcpd.api import *
 class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	"""
 	This class is used to implement the HTCPCP protocol which is
-	an update of the HTTP protocol. This protocol is used to 
+	an update of the HTTP protocol. The HTCPCP protocol is used to
 	control a coffee pot trough the HTTP protocol. Check the
 	RFC (http://tools.ietf.org/html/rfc2324) for more detais.
 	"""
@@ -27,23 +28,24 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		cls.pot = CoffeePot(cls.SERIAL_DEVICE)
 		"""
 		The static CoffeePot instance for the HTCPCP server.
+        Used to communicate with the coffeepot API.
 		"""
 
 	def do_GET(self):
 		"""
-		This method implement the GET HTTP method. The actual
-		available page are 'status', 'water' and 'pot'.
+		This method implements the GET HTTP method. The actual
+		available pages are 'status', 'water' and 'pot'.
 
-		The 'status' page get the brewing status of the coffee
+		The 'status' page gets the brewing status of the coffee pot
 		from self.pot.
 		
-		The 'water' page get how much water in the coffee pot
+		The 'water' page gets how much water is left in the coffee pot
 		from self.pot.
 
-		The 'pot' page get the pot status of the coffee pot
+		The 'pot' page gets the pot status of the coffee pot
 		from self.pot.
 
-		If the called page doesn't exist, a 404 error is sent 
+		If the page called doesn't exist, a 404 error is sent
 		with the available page on this server.
 		"""
 
@@ -85,8 +87,8 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 			
 	def do_POST(self):
 		"""
-		This method implement the POST HTTP method. It 
-		only call the do_BREW method as specified in 
+		This method implements the POST HTTP method. It 
+		only calls the do_BREW method as specified in 
 		the HTCPCP RFC.
 		"""
 
@@ -99,8 +101,8 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
 	def do_PROPFIND(self):
 		"""
-		This method implement the PROPFIND HTTP method. It is supposed 
-		to send metadata on the coffee pot. It actually return a 
+		This method implements the PROPFIND HTTP method. It is supposed 
+		to send metadata on the coffee pot. For now, it returns a 
 		not implemented error.
 		"""
 
@@ -113,9 +115,9 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
 	def do_WHEN(self):
 		"""
-		This method implement the WHEN HTCPCP method. It is supposed 
-		to send when the milk will be added to the coffee. It actually
-		send a not implemented error.
+		This method implements the WHEN HTCPCP method. It is supposed 
+		to send when the milk will be added to the coffee. For now, it
+		sends a not implemented error.
 		"""
 		
 		#If the request is bad, the headers are already sent,
@@ -126,9 +128,10 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		self.send_not_implemented("This coffee pot isn't able to add milk to your coffee.")
 
 
+#TODO: GREG GO ON FROM HERE
 	def do_BREW(self):
 		"""
-		This method implement the BREW HTCPCP method. This
+		This method implements the BREW HTCPCP method. This
 		method is use to send command to the coffee pot. There 
 		is actualy only the start and stop command wich are
 		implemented with the messsage/coffeepot content-type.
