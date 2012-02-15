@@ -1,7 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """ 
-This file contains the HTCPCPClient class.
+This file contains the HTCPCPClient class, used
+to send requests to the HTCPCPD server.
 Author: Frédérik Paradis
 """
 
@@ -13,13 +14,13 @@ import StringIO
 class HTCPCPClient(Cmd):
 	"""
 	This class is a command line utility to communicate
-	with the actual HTCPCP server.
+	with the actual HTCPCPD server.
 	"""	
 
 	def __init__(self, host):
 		""" 
-		Initialize the command line with the tuple in parameter.
-		The tuple must have to object: (host, port).
+		Initialize the command line with the tuple as first parameter.
+		The tuple must have the following form: (host, port).
 		"""
 		Cmd.__init__(self)
 		self.prompt = "CoffeePot> "
@@ -27,15 +28,15 @@ class HTCPCPClient(Cmd):
 
 	def do_brew(self, line):
 		""" 
-		Start the coffee brewing. There is an error
-		if the coffee brewing is already started.
+		Start the coffee brewing. Shows an error
+		if the coffee pot is already brewing.
 		"""
 		self.brew_command("start")
 
 	def do_stop(self, line):
 		""" 
-		Stop the coffee brewing. There is an error
-		if the coffee brewing is already stopped.
+		Stop the coffee brewing. Shows an error
+		if the coffee pot is not already brewing.
 		"""
 		self.brew_command("stop")
 
@@ -47,7 +48,7 @@ class HTCPCPClient(Cmd):
 	
 	def do_water(self, line):
 		""" 
-		Show the quantity of water in litre in the
+		Show the quantity of water litres left in the
 		coffee pot.
 		"""
 		self.curl_query("water")
@@ -60,7 +61,7 @@ class HTCPCPClient(Cmd):
 
 	def do_resume(self, line):
 		""" 
-		Show many information on the coffee pot.
+		Display various information about the coffee pot.
 		"""
 		pass
 
@@ -75,14 +76,14 @@ class HTCPCPClient(Cmd):
 
 	def emptyline(self):
 		""" 
-		Do nothing when an empty line is submit
+		Do nothing when an empty line is submitted
 		"""
 		pass
 
 	def brew_command(self, command):
 		"""
-		This method send a BREW message to the HTCPCP server
-		with the content-type header to message/coffeepot.
+		This method sends a BREW message to the HTCPCP server
+		with the content-type header set to message/coffeepot.
 		"""
 		c = Curl()
 		c.setopt(URL, self.url)
@@ -95,8 +96,8 @@ class HTCPCPClient(Cmd):
 
 	def curl_query(self, page):
 		""" 
-		This method call the HTCPCP server with the page
-		in parameter.
+		This method sends a request the HTCPCP server on the page
+		specified as a parameter.
 		"""
 		c = Curl()
 		c.setopt(URL, self.url + page)
@@ -105,10 +106,9 @@ class HTCPCPClient(Cmd):
 
 	def get_line(self, c):
 		"""
-		This method call the perform method of the curl
-		object in parameter and return the page result 
-		associated.
-		"""
+		This method calls the perform method of the curl
+		object in parameter and returns the result associated
+		to the page."""
 		b = StringIO.StringIO()
 		c.setopt(WRITEFUNCTION, b.write)
 		c.perform()
