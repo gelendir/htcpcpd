@@ -8,7 +8,7 @@ license=('GPL3')
 depends=('python2-distribute' 'python-pycurl' 'python-daemon' 'python-pyserial')
 source=("${url}/${pkgname}.tar.bz2"
         "htcpcpd")
-md5sums=("d18cfe41957438b394a1c93ae7fe917f"
+md5sums=("b6c05d1ea168fe7e05b7022f229a2a1e"
          "79de9a6754bba4053cdca323e2d15862")
 
 build() {
