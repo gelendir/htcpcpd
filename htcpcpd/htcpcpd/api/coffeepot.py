@@ -1,7 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This file contains the CoffeePot class.
+This file contains the CoffeePot class, the API for
+controlling the coffee pot plugged onto the Arduino board.
 Author: Frédérik Paradis
 """
 
@@ -12,14 +13,15 @@ import consts
 class CoffeePot:
 	"""
 	This class is an API to communicate with a coffee pot
-	trough a Arduino device. It use the serial port with
-	pyserial module.
+	trough an Arduino device. It uses the pyserial module to
+	communicate with the Arduino through a serial port.
 	"""
     
 	def __init__(self, device):
 		"""
-		This method open the serial connection with the
-		Arduino serial device specified in parameter.
+		This method opens the serial connection with the
+		Arduino serial port. The serial port can be
+		specified with the `device` parameter
 		"""
 
 		self.pot = serial.Serial(device, 9600)
@@ -28,14 +30,14 @@ class CoffeePot:
 
 	def __del__(self):
 		"""
-		This method close the connection to the Arduino.
+		This method deletes the CoffeePot instance
 		"""
 
 		self.close()
 
 	def close(self):
 		"""
-		This method close the connection to the Arduino.
+		This method closes the connection to the Arduino.
 		"""
 		
 		if self.pot.isOpen():
@@ -43,24 +45,24 @@ class CoffeePot:
 
 	def brew(self):
 		"""
-		This method start the coffee brewing. If the coffee
-		brewing was already started, this method return
-		False; otherwise True.
+		This method starts the coffee brewing. If the
+		brewing has already been started, then
+		False is returned; otherwise True.
 		"""
 		
 		return self.sendAndReceive(consts.BREW_COFFEE)
 
 	def stopBrewing(self):
 		"""
-		This method stop the coffee brewing. If the coffee
-		brewing was already stopped, this method return
-		False; otherwise True.
+		This method stops the coffee brewing. If the coffee
+		pot is not brewing, then False is returned; 
+		otherwise True.
 		"""
 		return self.sendAndReceive(consts.STOP_BREWING)
 
 	def isCoffeeBrewing(self):
 		"""
-		This method return True if the coffee is brewing; False
+		This method returns True if the coffee pot is brewing; False
 		otherwise.
 		"""
 
@@ -68,8 +70,8 @@ class CoffeePot:
 
 	def getNbLitres(self):
 		"""
-		This method return the number of litres there is
-		in the recipient.
+		This method returns the number of water litres that
+		are left in the water container.
 		"""
 		
 		self.pot.write(consts.WATER_STATUS['message'] + '\n')
@@ -84,27 +86,26 @@ class CoffeePot:
 	
 	def isEmpty(self):
 		"""
-		This method return True if there is no water in the 
-		recipient of the coffee pot; otherwise False.
+		This method returns True if there is no water in the 
+		water container of the coffee pot; otherwise False.
 		"""
 
 		return self.getNbLitres() == 0
 	
 	def hasPot(self):
 		"""
-		This method return True if the pot is in the coffee
-		pot; otherwise False.
+		This method returns True if there is a pot
+		on the coffee pot's sockle; otherwise False
 		"""
 		
 		return self.sendAndReceive(consts.POT_STATUS)
 		
 	def sendAndReceive(self, message):
 		"""
-		This method send the message element in the dictionnary 
-		specified in parameter, receive a line from the serial 
-		port and compare it to the ['statuses']['good'] element
-		in the dictionnary. It return True if the lines
-		are same; otherwise False.
+		This method is used to send and receive a message
+		from the Arduino's serial port. The Arduino's response is compared
+		to a dictionnary of statuses to check if it is valid or not.
+		The method returns True if the response is valid, False otherwise.
 		"""
 		
 		self.pot.write(message['message'] + '\n')
