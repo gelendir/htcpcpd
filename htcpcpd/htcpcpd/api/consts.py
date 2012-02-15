@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This file contains all constants used to communicate
+This file contains all the messages used to communicate
 with the coffee pot trough the Arduino board.
 Author: Frédérik Paradis
 """
