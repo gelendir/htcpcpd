@@ -72,6 +72,10 @@ class HTCPCPDImpl(SimpleHTTPServer.SimpleHTTPRequestHandler):
 				self.send_OK("The coffee pot is in position.")
 			else:
 				self.send_OK("The coffee pot is not in position.")
+		elif page == "water_reading":
+			self.send_OK(self.pot.waterReading())
+		elif page == "time_left":
+			self.send_OK(self.pot.timeLeft())
 		else:
 			self.send_error(404, "This page is unavailable")
 			self.end_headers()

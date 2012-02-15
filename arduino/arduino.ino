@@ -32,6 +32,8 @@ const char COMMAND_BREWING_STATE[]      PROGMEM = "AR U BREWING COFFEEZ ?";
 const char COMMAND_WATER_QUANTITY[]     PROGMEM = "I CAN HAZ MOAR WATER ?";
 const char COMMAND_POT_PRESENCE[]       PROGMEM = "O HAI! I WAN MAH BUKKET ! U HAZ BUKKET ?";
 const char COMMAND_STOP_BREWING[]       PROGMEM = "OUCH OUCH! TIZ COFFEE IZ HAWT! STOP!";
+const char COMMAND_WATER_READING[]      PROGMEM = "WATER READING";
+const char COMMAND_TIME_LEFT[]          PROGMEM = "TIME LEFT";
 
 /* Responses */
 const char RESPONSE_STR_POT_AVAILABLE[]             PROGMEM = "I HAZ YUR BUKKET";
@@ -166,7 +168,12 @@ void loop() {
             processStartBrewing();
         } else if ( isCommand( command, COMMAND_STOP_BREWING ) ) {
             processStopBrewing();
+        } else if ( isCommand( command, COMMAND_WATER_READING ) ) {
+            processWaterReadings();
+        } else if ( isCommand( command, COMMAND_TIME_LEFT ) ) {
+            processTimeLeft();
         }
+        
 
     }
 
@@ -413,5 +420,19 @@ void processStopBrewing() {
         sendResponse( RESPONSE_STOPPED_BREWING );
     }
 
+}
+
+void processWaterReadings() {
+  for(int i = 0; i < NB_WATER_PINS; ++i) {
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.print(analogRead(WATER_PINS[i].pin));
+    Serial.print(" ");
+  }
+  Serial.println();
+}
+
+void processTimeLeft() {
+  Serial.println(millis() - boilerTimestamp);
 }
 
