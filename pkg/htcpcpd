@@ -2,10 +2,14 @@
 
 . /etc/rc.conf
 . /etc/rc.d/functions
+
 case "$1" in
   start)
     stat_busy "Starting HTCPCPD"
-    pkill -f htcpcpd &> /dev/null
+	if [ -f "/var/run/htcpcpd.pid" ]; then
+		pid=$(cat /var/run/htcpcpd.pid)
+		kill $pid &> /dev/null
+	fi
     /usr/bin/htcpcpd -c /etc/htcpcpd.ini &> /dev/null
     add_daemon htcpcpd
     stat_done

@@ -74,6 +74,22 @@ class HTCPCPClient(Cmd):
 	do_exit = do_quit
 	do_EOF = do_quit
 
+	def do_time_left(self, line):
+		"""
+		Debug command to know the time left of 
+		the brewing timer.
+		"""
+		
+		self.curl_query("time_left")
+
+	def do_water_reading(self, line):
+		"""
+		Debug command to know the analogic reading
+		of the captor of water.
+		"""
+		
+		self.curl_query("water_reading")
+
 	def emptyline(self):
 		""" 
 		Do nothing when an empty line is submitted

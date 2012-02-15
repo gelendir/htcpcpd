@@ -84,6 +84,24 @@ class CoffeePot:
 		else:
 			return 0
 	
+	def	waterReading(self):
+		"""
+		Debug method to know the analogic reading
+		of the captor of water.
+		"""
+
+		self.pot.write("WATER READING\n")
+		return self.pot.readline().strip()
+
+	def timeLeft(self):
+		"""
+		Debug function to know the time left of 
+		the brewing timer.
+		"""
+
+		self.pot.write("TIME LEFT\n")
+		return int(self.pot.readline().strip())
+
 	def isEmpty(self):
 		"""
 		This method returns True if there is no water in the 
