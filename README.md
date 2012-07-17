@@ -55,3 +55,8 @@ Pour utiliser le client, il suffit de rentrer la commande suivante:
 où les deux arguments ne sont pas obligatoire. Le premier indique l'adresse du
 serveur HTCPCPD et le deuxième le port du serveur.
 
+### License ###
+
+Ce projet est sous license GPLv3. La license est disponible à la page
+suivante : http://www.gnu.org/licenses/gpl-3.0.txt
+
