@@ -1,3 +1,10 @@
+Bienvenue à HTCPCD
+==================
+
+HTCPCPD est une implémentation du protocole HTCPCP permettant de
+contrôler une cafetière à travers HTTP. Pour plus de détails, veuillez
+vous rendre sur [La page web du projet](http://gelendir.github.com/htcpcpd/)
+
 Implémentation du protocole HTCPCP
 ==================================
 
